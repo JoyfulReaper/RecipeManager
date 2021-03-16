@@ -24,12 +24,13 @@ using RecipeConsole.Menus;
 using RecipeLibrary.Data;
 using Serilog;
 using System;
+using System.Threading.Tasks;
 
 namespace RecipeConsoleUI
 {
     internal class Program
     {
-        internal static void Main(string[] args)
+        internal async static Task Main(string[] args)
         {
             Bootstrap.SetupLogging();
 
@@ -40,7 +41,14 @@ namespace RecipeConsoleUI
 
             try
             {
-                host.Services.GetRequiredService<IDataSeed>().Seed();
+                //TODO Don't have the DbContext as a dependency here
+                var context = host.Services.GetRequiredService<RecipeManagerContext>();
+                bool dbWasCreated = await context.Database.EnsureCreatedAsync();
+
+                if (dbWasCreated)
+                {
+                    host.Services.GetRequiredService<IDataSeed>().Seed();
+                }
             }
             catch (Exception ex)
             {
@@ -53,7 +61,20 @@ namespace RecipeConsoleUI
                 Environment.Exit(1);
             }
 
-            host.Services.GetRequiredService<IMainMenu>().Show();
+            try
+            {
+                host.Services.GetRequiredService<IMainMenu>().Show();
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal("Unhandeled Exception: {exception}", ex.Message);
+                Console.WriteLine("Unhandeled Exception Occured:");
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+
+                Environment.Exit(1);
+            }
         }
     }
 }
