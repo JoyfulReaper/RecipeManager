@@ -22,6 +22,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace RecipeLibrary.Repositories
 {
@@ -32,32 +33,32 @@ namespace RecipeLibrary.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        TEntity Get(int id);
+        Task<TEntity> Get(int id);
 
         /// <summary>
         /// Get all Entities
         /// </summary>
         /// <returns></returns>
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
 
         /// <summary>
         /// Find an Entity
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Add and Entity
         /// </summary>
         /// <param name="entity"></param>
-        void add(TEntity entity);
+        void Add(TEntity entity);
 
         /// <summary>
         /// Add a range of Entities
         /// </summary>
         /// <param name="entities"></param>
-        void addRange(IEnumerable<TEntity> entities);
+        void AddRange(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Remove an Entity

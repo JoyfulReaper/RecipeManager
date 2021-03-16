@@ -83,7 +83,7 @@ namespace RecipeTests.Services
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
-                await ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
+                ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
 
                 var isItInDb = await ingredientService.GetIngredientByName("Carrot");
 
@@ -98,7 +98,7 @@ namespace RecipeTests.Services
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
-                await ingredientService.DeleteIngredientByName("Apple");
+                ingredientService.DeleteIngredientByName("Apple");
 
 
                 await Assert.ThrowsAsync<KeyNotFoundException>(async () => await ingredientService.GetIngredientByName("Apple"));

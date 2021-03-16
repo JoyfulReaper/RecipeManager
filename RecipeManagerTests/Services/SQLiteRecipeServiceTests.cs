@@ -115,7 +115,7 @@ namespace RecipeTests.Services
                 var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
                 var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
 
-                await ingredientService.AddIngredient(new IngredientModel { Name = "Cherry" });
+                ingredientService.AddIngredient(new IngredientModel { Name = "Cherry" });
 
                 await recipeService.AddIngredient(await recipeService.GetRecipeByName("Fruit Salad"),
                     await ingredientService.GetIngredientByName("Cherry"));

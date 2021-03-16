@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace RecipeLibrary.Repositories
 {
@@ -36,27 +37,27 @@ namespace RecipeLibrary.Repositories
             Context = context;
         }
 
-        public TEntity Get(int id)
+        public async Task <TEntity> Get(int id)
         {
-            return Context.Set<TEntity>().Find(id);
+            return await Context.Set<TEntity>().FindAsync(id);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return Context.Set<TEntity>().ToList();
+            return await Context.Set<TEntity>().ToListAsync();
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().Where(predicate);
+            return await Context.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
-        public void add(TEntity entity)
+        public void Add(TEntity entity)
         {
             Context.Set<TEntity>().Add(entity);
         }
 
-        public void addRange(IEnumerable<TEntity> entities)
+        public void AddRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().AddRange(entities);
         }

@@ -11,6 +11,9 @@ namespace RecipeLibrary.Services
 {
     public class IngredientService : IIngredientService
     {
+        // TODO add logging
+        // TODO add error checking
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<IngredientService> _logger;
 
@@ -21,39 +24,45 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public Task AddIngredient(IngredientModel recipe)
+        public void AddIngredient(IngredientModel recipe)
         {
-            throw new NotImplementedException();
+            _unitOfWork.Ingredients.Add(recipe);
+            //_unitOfWork.Complete();
         }
 
-        public Task DeleteIngredient(IngredientModel recipe)
+        public void DeleteIngredient(IngredientModel recipe)
         {
-            throw new NotImplementedException();
+            _unitOfWork.Ingredients.Remove(recipe);
+            //_unitOfWork.Complete();
         }
 
-        public Task DeleteIngredientByName(string name)
+        public void DeleteIngredientByName(string name)
         {
-            throw new NotImplementedException();
+            _unitOfWork.Ingredients.DeleteIngredientByName(name);
+            //_unitOfWork.Complete();
         }
 
-        public Task<List<IngredientModel>> GetAllIngredients()
+        public async Task<List<IngredientModel>> GetAllIngredients()
         {
-            throw new NotImplementedException();
+            var res = await _unitOfWork.Ingredients.GetAll();
+            return res.ToList();
         }
 
-        public Task<IngredientModel> GetIngredientByName(string name)
+        public async Task<IngredientModel> GetIngredientByName(string name)
         {
-            throw new NotImplementedException();
+            var res = await _unitOfWork.Ingredients.Find(i => i.Name == name);
+            return res.FirstOrDefault();
         }
 
-        public Task<bool> IngredientExists(string name)
+        public async Task<bool> IngredientExists(string name)
         {
-            throw new NotImplementedException();
+            var res = await _unitOfWork.Ingredients.Find(i => i.Name == name);
+            return res.FirstOrDefault() != null;
         }
 
-        public Task UpdateIngredient(IngredientModel recipe)
+        public void UpdateIngredients()
         {
-            throw new NotImplementedException();
+            _unitOfWork.Complete();
         }
     }
 }

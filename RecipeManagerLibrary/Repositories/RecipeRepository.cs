@@ -24,6 +24,7 @@ using RecipeLibrary.Data;
 using RecipeLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RecipeLibrary.Repositories
 {
@@ -36,11 +37,12 @@ namespace RecipeLibrary.Repositories
 
         public RecipeRepository(RecipeManagerContext context) : base(context) { }
 
-        public IEnumerable<RecipeModel> GetAllRecipesWithIngredients()
+        public async Task<IEnumerable<RecipeModel>> GetAllRecipesWithIngredients()
         {
-            return RecipeManagerContext.Recipes
+            return await RecipeManagerContext
+                .Recipes
                 .Include(i => i.Ingredients)
-                .ToList();
+                .ToListAsync();
         }
     }
 }
