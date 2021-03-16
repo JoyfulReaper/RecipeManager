@@ -32,7 +32,7 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="recipe">Recipe to add</param>
         /// <returns></returns>
-        Task AddRecipe(RecipeModel recipe);
+        void AddRecipe(RecipeModel recipe);
 
         /// <summary>
         /// Add A recipe to the database
@@ -46,37 +46,21 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="recipe">Recipe to delete</param>
         /// <returns></returns>
-        Task DeleteRecipe(RecipeModel recipe);
+        void DeleteRecipe(RecipeModel recipe);
 
         /// <summary>
         /// Delete A recipe from the database
         /// </summary>
         /// <param name="name">Name of the recipe to delete</param>
         /// <returns></returns>
-        Task DeleteRecipeByName(string name);
-
-        /// <summary>
-        /// Add an ingredient to a recipe
-        /// </summary>
-        /// <param name="recipe">The recipe to add an ingredient to</param>
-        /// <param name="ingredient">The Ingredient to add</param>
-        /// <returns></returns>
-        Task AddIngredient(RecipeModel recipe, IngredientModel ingredient);
-
-        /// <summary>
-        /// Remove an ingredient from a recipe
-        /// </summary>
-        /// <param name="recipe">The recipe to remove an ingredient from<</param>
-        /// <param name="ingredient"></param>
-        /// <returns></returns>
-        Task DeleteIngredient(RecipeModel recipe, IngredientModel ingredient);
+        void DeleteRecipeByName(string name);
 
         /// <summary>
         /// Update an existing recipe
         /// </summary>
         /// <param name="recipe"></param>
         /// <returns></returns>
-        Task UpdateReciept(RecipeModel recipe);
+        void UpdateRecipes();
 
         /// <summary>
         /// Get a recipe by name

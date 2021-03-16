@@ -135,7 +135,8 @@ namespace RecipeConsole.Menus
 
             try
             {
-                await _ingredientService.DeleteIngredientByName(name);
+                _ingredientService.DeleteIngredientByName(name);
+                _ingredientService.UpdateIngredients();
             }
             catch (KeyNotFoundException)
             {
@@ -154,7 +155,8 @@ namespace RecipeConsole.Menus
             IngredientModel newIngreditent = new IngredientModel { Name = name };
             try
             {
-                await _ingredientService.AddIngredient(newIngreditent);
+                _ingredientService.AddIngredient(newIngreditent);
+                _ingredientService.UpdateIngredients();
             }
             catch (KeyNotFoundException)
             {

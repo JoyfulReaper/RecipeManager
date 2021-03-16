@@ -19,18 +19,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+
 using RecipeLibrary.Data;
 using RecipeLibrary.Models;
+using Serilog;
+using System;
+using System.Linq;
 
 namespace RecipeLibrary.Repositories
 {
     public class IngredientRepository : Repository<IngredientModel>, IIngredientRepository
     {
-        public IngredientRepository(RecipeManagerContext context) : base(context) { }
+        public IngredientRepository(RecipeManagerContext context) : base(context)
+        { }
 
         public RecipeManagerContext RecipeManagerContext
         {
             get { return Context as RecipeManagerContext; }
+        }
+
+        public void DeleteIngredientByName(string name)
+        {
+            var ingredient = Context.Set<IngredientModel>().Where(i => i.Name == name).FirstOrDefault();
+
+            if(ingredient == null)
+            {
+                throw new ArgumentException($"{name} does not exist in the database.", nameof(name));
+            }
+
+            Context.Remove(ingredient);
         }
     }
 }

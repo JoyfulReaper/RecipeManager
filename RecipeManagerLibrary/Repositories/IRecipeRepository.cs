@@ -21,12 +21,14 @@ SOFTWARE.
 
 using RecipeLibrary.Models;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 namespace RecipeLibrary.Repositories
 {
     public interface IIRecipeRepository : IRepository<RecipeModel>
     {
-        IEnumerable<RecipeModel> GetAllRecipesWithIngredients();
+        Task<IEnumerable<RecipeModel>> GetAllRecipesWithIngredients();
+
+        void DeleteRecipeByName(string name);
     }
 }

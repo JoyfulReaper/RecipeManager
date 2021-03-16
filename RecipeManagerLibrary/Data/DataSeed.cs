@@ -54,6 +54,7 @@ namespace RecipeLibrary.Data
                 }
             });
 
+            _recipeService.UpdateRecipes();
         }
 
     }

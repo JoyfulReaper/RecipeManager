@@ -25,5 +25,6 @@ namespace RecipeLibrary.Repositories
 {
     public interface IIngredientRepository : IRepository<IngredientModel>
     {
+        public void DeleteIngredientByName(string name);
     }
 }

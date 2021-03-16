@@ -61,7 +61,7 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test__WithDB_GetAllIngredients()
+        public async Task Test_WithDB_GetAllIngredients()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
@@ -83,7 +83,7 @@ namespace RecipeTests.Services
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
-                await ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
+                ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
 
                 var isItInDb = await ingredientService.GetIngredientByName("Carrot");
 
@@ -93,12 +93,12 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test__WithDB_DeleteIngredientByName()
+        public async Task Test_WithDB_DeleteIngredientByName()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
-                await ingredientService.DeleteIngredientByName("Apple");
+                ingredientService.DeleteIngredientByName("Apple");
 
 
                 await Assert.ThrowsAsync<KeyNotFoundException>(async () => await ingredientService.GetIngredientByName("Apple"));
