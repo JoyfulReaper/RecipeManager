@@ -60,7 +60,7 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="recipe"></param>
         /// <returns></returns>
-        void UpdateRecipes(RecipeModel recipe);
+        void UpdateRecipes();
 
         /// <summary>
         /// Get a recipe by name

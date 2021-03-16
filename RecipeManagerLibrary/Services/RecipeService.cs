@@ -54,7 +54,7 @@ namespace RecipeLibrary.Services
             return res.FirstOrDefault() != null;
         }
 
-        public void UpdateRecipes(RecipeModel recipe)
+        public void UpdateRecipes()
         {
             _unitOfWork.Complete();
         }

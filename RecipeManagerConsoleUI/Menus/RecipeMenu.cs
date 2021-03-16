@@ -20,7 +20,6 @@ SOFTWARE.
 */
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RecipeLibrary.Services;
@@ -142,7 +141,8 @@ namespace RecipeConsole.Menus
 
             try
             {
-                await _recipeService.DeleteRecipeByName(name);
+                _recipeService.DeleteRecipeByName(name);
+                _recipeService.UpdateRecipes();
             }
             catch (KeyNotFoundException)
             {
@@ -200,26 +200,18 @@ namespace RecipeConsole.Menus
                 }
             }
 
+            recipe.Ingredients = ingredients;
+
             try
             {
-                await _recipeService.AddRecipe(recipe);
+                _recipeService.AddRecipe(recipe);
+                _recipeService.UpdateRecipes();
+
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{recipe.Name}' has been added.");
             }
             catch (KeyNotFoundException)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} already exists.");
-            }
-
-            foreach (var ingredient in ingredients)
-            {
-                try
-                {
-                    await _recipeService.AddIngredient(recipe, ingredient);
-                }
-                catch (KeyNotFoundException)
-                {
-                    ConsoleHelper.ColorWriteLine($"'{recipe.Name}' does not exist.");
-                }
             }
 
             Console.WriteLine();
