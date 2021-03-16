@@ -8,6 +8,6 @@ namespace RecipeLibrary.Data
         public RecipeManagerContext(DbContextOptions options) : base(options) { }
 
         public DbSet<RecipeModel> Recipes { get; set;}
-        public DbSet<IngredientModel> ingredients { get; set; }
+        public DbSet<IngredientModel> Ingredients { get; set; }
     }
 }
