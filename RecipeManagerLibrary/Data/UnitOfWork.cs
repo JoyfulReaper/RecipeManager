@@ -32,7 +32,6 @@ namespace RecipeLibrary.Data
             _context = context;
             Ingredients = new IngredientRepository(_context);
             Recipes = new RecipeRepository(_context);
-
         }
 
         public IIngredientRepository Ingredients { get; private set; }

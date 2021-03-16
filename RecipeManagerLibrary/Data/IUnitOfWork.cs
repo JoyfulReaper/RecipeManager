@@ -29,6 +29,10 @@ namespace RecipeLibrary.Data
         IIngredientRepository Ingredients { get; }
         IIRecipeRepository Recipes { get; }
 
+        /// <summary>
+        /// Complete current unit of work
+        /// </summary>
+        /// <returns>Number of entities written to database</returns>
         int Complete();
     }
 }
