@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using RecipeLibrary.Data;
 using RecipeLibrary.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RecipeLibrary.Services
@@ -24,15 +22,15 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public void AddIngredient(IngredientModel recipe)
+        public void AddIngredient(IngredientModel ingredient)
         {
-            _unitOfWork.Ingredients.Add(recipe);
+            _unitOfWork.Ingredients.Add(ingredient);
             //_unitOfWork.Complete();
         }
 
-        public void DeleteIngredient(IngredientModel recipe)
+        public void DeleteIngredient(IngredientModel ingredient)
         {
-            _unitOfWork.Ingredients.Remove(recipe);
+            _unitOfWork.Ingredients.Remove(ingredient);
             //_unitOfWork.Complete();
         }
 

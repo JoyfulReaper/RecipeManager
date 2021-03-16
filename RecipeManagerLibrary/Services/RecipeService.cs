@@ -21,49 +21,42 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public Task AddIngredient(RecipeModel recipe, IngredientModel ingredient)
+        public void AddRecipe(RecipeModel recipe)
         {
-            throw new NotImplementedException();
+            _unitOfWork.Recipes.Add(recipe);
         }
 
-        public Task AddRecipe(RecipeModel recipe)
+        public void DeleteRecipe(RecipeModel recipe)
         {
-            throw new NotImplementedException();
+            _unitOfWork.Recipes.Remove(recipe);
         }
 
-        public Task DeleteIngredient(RecipeModel recipe, IngredientModel ingredient)
+        public void DeleteRecipeByName(string name)
         {
-            throw new NotImplementedException();
+            _unitOfWork.Recipes.DeleteRecipeByName(name);
         }
 
-        public Task DeleteRecipe(RecipeModel recipe)
+        public async Task<List<RecipeModel>> GetAllRecipes()
         {
-            throw new NotImplementedException();
+            var res = await _unitOfWork.Recipes.GetAllRecipesWithIngredients();
+            return res.ToList();
         }
 
-        public Task DeleteRecipeByName(string name)
+        public async Task<RecipeModel> GetRecipeByName(string name)
         {
-            throw new NotImplementedException();
+            var res =  await _unitOfWork.Recipes.Find(r => r.Name == name);
+            return res.FirstOrDefault();
         }
 
-        public Task<List<RecipeModel>> GetAllRecipes()
+        public async Task<bool> RecipeExists(string name)
         {
-            throw new NotImplementedException();
+            var res = await _unitOfWork.Recipes.Find(i => i.Name == name);
+            return res.FirstOrDefault() != null;
         }
 
-        public Task<RecipeModel> GetRecipeByName(string name)
+        public void UpdateRecipes(RecipeModel recipe)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> RecipeExists(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateReciept(RecipeModel recipe)
-        {
-            throw new NotImplementedException();
+            _unitOfWork.Complete();
         }
     }
 }

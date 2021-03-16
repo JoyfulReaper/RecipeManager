@@ -61,7 +61,7 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test__WithDB_GetAllIngredients()
+        public async Task Test_WithDB_GetAllIngredients()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
@@ -93,7 +93,7 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test__WithDB_DeleteIngredientByName()
+        public async Task Test_WithDB_DeleteIngredientByName()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {

@@ -28,5 +28,7 @@ namespace RecipeLibrary.Repositories
     public interface IIRecipeRepository : IRepository<RecipeModel>
     {
         Task<IEnumerable<RecipeModel>> GetAllRecipesWithIngredients();
+
+        void DeleteRecipeByName(string name);
     }
 }

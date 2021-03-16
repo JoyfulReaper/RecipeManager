@@ -22,6 +22,7 @@ SOFTWARE.
 using Microsoft.EntityFrameworkCore;
 using RecipeLibrary.Data;
 using RecipeLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,18 @@ namespace RecipeLibrary.Repositories
                 .Recipes
                 .Include(i => i.Ingredients)
                 .ToListAsync();
+        }
+
+        public void DeleteRecipeByName(string name)
+        {
+            var recipe = Context.Set<RecipeModel>().Where(i => i.Name == name).FirstOrDefault();
+
+            if (recipe == null)
+            {
+                throw new ArgumentException($"{name} does not exist in the database.", nameof(name));
+            }
+
+            Context.Remove(recipe);
         }
     }
 }

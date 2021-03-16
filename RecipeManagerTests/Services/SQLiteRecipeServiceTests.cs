@@ -61,7 +61,7 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test_GetAllRecipe()
+        public async Task Test_WithDB_GetAllRecipe()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
