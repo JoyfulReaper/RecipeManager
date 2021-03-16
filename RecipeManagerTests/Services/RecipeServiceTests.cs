@@ -1,0 +1,67 @@
+﻿/*
+MIT License
+Copyright(c) 2021 Kyle Givler
+https://github.com/JoyfulReaper
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+using Microsoft.EntityFrameworkCore;
+using RecipeLibrary.Data;
+using RecipeLibrary.Models;
+using System.Collections.Generic;
+
+namespace RecipeTests.Services
+{
+    public abstract class RecipeServiceTests
+    {
+        protected DbContextOptions<RecipeManagerContext> ContextOptions { get; }
+
+        protected RecipeServiceTests(DbContextOptions<RecipeManagerContext> contextOptions)
+        {
+            ContextOptions = contextOptions;
+            Seed();
+        }
+
+        private void Seed()
+        {
+            using (var context = new RecipeManagerContext(ContextOptions))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                List<IngredientModel> fruitSaladIngredients = new List<IngredientModel>() {
+                    new IngredientModel { Name = "Apple" },
+                    new IngredientModel { Name = "Orange" },
+                    new IngredientModel { Name = "Peach" },
+                };
+
+                var fruitSalad = new RecipeModel { Name = "Fruit Salad", Ingredients = fruitSaladIngredients };
+
+                List<IngredientModel> applePieIngredients = new List<IngredientModel>() {
+                    new IngredientModel { Name = "Apple" },
+                    new IngredientModel { Name = "Crust" },
+                    new IngredientModel { Name = "Sugar" },
+                };
+
+                var applePie = new RecipeModel { Name = "Apple Pie", Ingredients = applePieIngredients };
+
+                context.AddRange(fruitSalad, applePie);
+                context.SaveChanges();
+            }
+        }
+    }
+}
