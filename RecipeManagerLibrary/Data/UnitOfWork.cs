@@ -19,6 +19,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Microsoft.Extensions.Logging;
 using RecipeLibrary.Repositories;
 
 namespace RecipeLibrary.Data
@@ -26,10 +27,14 @@ namespace RecipeLibrary.Data
     public class UnitOfWork : IUnitOfWork
     {
         private readonly RecipeManagerContext _context;
+        private readonly ILogger _logger;
 
-        public UnitOfWork(RecipeManagerContext context)
+        public UnitOfWork(RecipeManagerContext context,
+            ILogger<IUnitOfWork> logger)
         {
             _context = context;
+            _logger = logger;
+
             Ingredients = new IngredientRepository(_context);
             Recipes = new RecipeRepository(_context);
         }
@@ -40,6 +45,7 @@ namespace RecipeLibrary.Data
 
         public int Complete()
         {
+            _logger.LogDebug("UnitOfWork: Complete() - Saving database changes.");
             return _context.SaveChanges();
         }
 
