@@ -19,11 +19,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
@@ -37,6 +35,8 @@ namespace RecipeLibrary.Models
         /// <summary>
         /// Name of the Recipe
         /// </summary>
+        [Required]
+        [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
         // TODO need away of incorparating quantities

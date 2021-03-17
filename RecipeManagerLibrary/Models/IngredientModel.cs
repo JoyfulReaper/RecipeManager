@@ -19,6 +19,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace RecipeLibrary.Models
 {
     public class IngredientModel
@@ -28,12 +31,20 @@ namespace RecipeLibrary.Models
         /// <summary>
         /// Name of the Ingredient
         /// </summary>
+        [Required]
+        [Column(TypeName = "nvarchar(75)")]
         public string Name {get; set;}
 
         /// <summary>
         /// Quntity needed
         /// </summary>
         int Quantity { get; set; }
+
+        /// <summary>
+        /// The type of measurement for the Quantity
+        /// </summary>
+        [Column(TypeName = "nvarchar(50)")]
+        string Measurement { get; set; }
 
         /// <summary>
         /// The reciple to make the ingredeint
