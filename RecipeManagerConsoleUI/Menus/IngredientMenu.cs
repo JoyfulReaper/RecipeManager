@@ -24,7 +24,6 @@ using RecipeLibrary.Models;
 using RecipeLibrary.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RecipeConsole.Menus
@@ -70,7 +69,7 @@ namespace RecipeConsole.Menus
 
                 if (!Enum.IsDefined(typeof(IngredientMenuOption), option))
                 {
-                    _logger.LogWarning("Option could not be convertion to IngredientMenuOption Enum");
+                    _logger.LogWarning("IngredientMenu: Option could not be converted to IngredientMenuOption Enum");
                     valid = false;
                 }
 
@@ -85,7 +84,7 @@ namespace RecipeConsole.Menus
             switch (option)
             {
                 case IngredientMenuOption.InValid:
-                    _logger.LogWarning("ExecuteMenuSelection recieved invalid option");
+                    _logger.LogWarning("IngredientMenu: ExecuteMenuSelection() - recieved invalid option");
                     break;
                 case IngredientMenuOption.NewIngredient:
                     await NewIngredient();
@@ -103,6 +102,7 @@ namespace RecipeConsole.Menus
                     Console.WriteLine();
                     break;
                 default:
+                    _logger.LogError("IngredientMain: ExecuteMenuSelection() - default case hit. Option: {option}", (int)option);
                     break;
             }
         }
@@ -114,14 +114,13 @@ namespace RecipeConsole.Menus
 
             Console.WriteLine();
 
-            try
+            if (await _ingredientService.IngredientExists(name))
             {
-                var ingredient = await _ingredientService.GetIngredientByName(name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} exists.");
             }
-            catch(KeyNotFoundException)
+            else
             {
-                ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow,$"{name} does not exist.");
+                ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
             }
 
             Console.WriteLine();
@@ -137,8 +136,10 @@ namespace RecipeConsole.Menus
             {
                 _ingredientService.DeleteIngredientByName(name);
                 _ingredientService.UpdateIngredients();
+
+                ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{name}' has been deleted.");
             }
-            catch (KeyNotFoundException)
+            catch (ArgumentException)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
             }
@@ -155,10 +156,12 @@ namespace RecipeConsole.Menus
             IngredientModel newIngreditent = new IngredientModel { Name = name };
             try
             {
-                _ingredientService.AddIngredient(newIngreditent);
+                await _ingredientService.AddIngredient(newIngreditent);
                 _ingredientService.UpdateIngredients();
+
+                ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{newIngreditent.Name}' has been added.");
             }
-            catch (KeyNotFoundException)
+            catch (ArgumentException)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} already exists.");
             }
