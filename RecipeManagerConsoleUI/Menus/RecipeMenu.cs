@@ -144,6 +144,8 @@ namespace RecipeConsole.Menus
             {
                 _recipeService.DeleteRecipeByName(name);
                 _recipeService.UpdateRecipes();
+
+                ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{name}' has been deleted.");
             }
             catch (ArgumentException)
             {
