@@ -69,13 +69,19 @@ namespace RecipeConsole.Menus
 
                     if (!Enum.IsDefined(typeof(MainMenuOption), option))
                     {
-                        _logger.LogWarning("Option could not be convertion to MainMenuOption Enum");
+                        _logger.LogWarning("Option could not be converted to MainMenuOption Enum");
                         valid = false;
                     }
 
                 }
 
                 MainMenuOption choice = (MainMenuOption)option;
+
+                if (choice == MainMenuOption.Quit)
+                {
+                    return;
+                }
+
                 ExecuteMenuSelection(choice);
             }
         }
@@ -94,9 +100,6 @@ namespace RecipeConsole.Menus
                 case MainMenuOption.IngredientMenu:
                     Console.WriteLine();
                     _ingredientMenu.Show();
-                    break;
-                case MainMenuOption.Quit:
-                    Environment.Exit(0);
                     break;
                 default:
                     break;

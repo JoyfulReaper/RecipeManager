@@ -19,56 +19,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.Extensions.DependencyInjection;
-using RecipeConsole.Menus;
-using RecipeLibrary.Data;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
-using System.Threading.Tasks;
 
 namespace RecipeConsoleUI
 {
     internal class Program
     {
-        internal async static Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            Bootstrap.SetupLogging();
-
-            var logger = Log.ForContext<Program>();
-            logger.Debug("Recipe Manager Starting");
-
-            var host = Bootstrap.CreateHostBuilder(args).Build();
-
             try
             {
-                //TODO Don't have the DbContext as a dependency here
-                var context = host.Services.GetRequiredService<RecipeManagerContext>();
-                bool dbWasCreated = await context.Database.EnsureCreatedAsync();
-
-                if (dbWasCreated)
-                {
-                    host.Services.GetRequiredService<IDataSeed>().Seed();
-                }
+                Bootstrap.CreateHostBuilder(args).RunConsoleAsync();
             }
             catch (Exception ex)
             {
-                logger.Fatal("Unable to seed database: {exception}", ex.Message);
-                Console.WriteLine("Exception occured error while seeding data:");
-                Console.WriteLine();
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                var logger = Log.ForContext<Program>();
+                logger.Fatal("Unhandled Exception Occured: {exception}", ex.Message);
 
-                Environment.Exit(1);
-            }
-
-            try
-            {
-                host.Services.GetRequiredService<IMainMenu>().Show();
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal("Unhandeled Exception: {exception}", ex.Message);
-                Console.WriteLine("Unhandeled Exception Occured:");
+                Console.WriteLine("Unhandled Exception Occured: ");
                 Console.WriteLine();
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);

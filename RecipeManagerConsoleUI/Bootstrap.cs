@@ -41,29 +41,29 @@ namespace RecipeConsoleUI
         /// <returns>IHostBuilder</returns>
         internal static IHostBuilder CreateHostBuilder(string[] args)
         {
+            SetupLogging();
+
             return Host.CreateDefaultBuilder(args)
                 .UseSerilog()
-              .ConfigureServices((hostContext, services) =>
-              {
-                  services.
-                   AddLogging(configure => configure.AddSerilog())
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddDbContext<RecipeManagerContext>(options =>
+                    {
+                        options.UseSqlite(hostContext.Configuration.GetConnectionString("Default"));
+                    })
                     .AddTransient<IUnitOfWork, UnitOfWork>()
                     .AddTransient<IIngredientRepository, IngredientRepository>()
                     .AddTransient<IIRecipeRepository, RecipeRepository>()
-                    .AddTransient<IDataSeed, DataSeed>()
                     .AddTransient<IRecipeService, RecipeService>()
                     .AddTransient<IIngredientService, IngredientService>()
                     .AddTransient<IMainMenu, MainMenu>()
                     .AddTransient<IIngredientMenu, IngredientMenu>()
                     .AddTransient<IRecipeMenu, RecipeMenu>()
-                    .AddDbContext<RecipeManagerContext>(options =>
-                    {
-                        options.UseSqlite(hostContext.Configuration.GetConnectionString("Default"));
-                    });
-              });
+                    .AddHostedService<Application>();
+                });
         }
 
-        internal static void SetupLogging()
+        private static void SetupLogging()
         {
             var configBuilder = new ConfigurationBuilder();
 
