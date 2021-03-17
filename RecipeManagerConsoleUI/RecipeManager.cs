@@ -75,9 +75,9 @@ namespace RecipeConsoleUI
             // TODO Make this not depend on EF
             try
             {
-                var databaseExists = _context.Database.EnsureCreated();
+                var databaseCreated = _context.Database.EnsureCreated();
 
-                if (!_context.Recipes.Any() && !_context.Ingredients.Any() || !databaseExists)
+                if (!_context.Recipes.Any() && !_context.Ingredients.Any() || databaseCreated)
                 {
                     _seeder.Seed();
                 }
