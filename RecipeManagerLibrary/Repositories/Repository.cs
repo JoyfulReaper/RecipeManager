@@ -52,6 +52,23 @@ namespace RecipeLibrary.Repositories
             return await Context.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate, 
+            string includeProperties = "")
+        {
+
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return await query.Where(predicate).ToListAsync();
+
+            //return await Context.Set<TEntity>()
+            //    .Where(predicate).ToListAsync();
+        }
+
         public void Add(TEntity entity)
         {
             Context.Set<TEntity>().Add(entity);

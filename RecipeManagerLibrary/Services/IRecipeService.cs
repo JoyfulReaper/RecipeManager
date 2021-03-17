@@ -32,7 +32,7 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="recipe">Recipe to add</param>
         /// <returns></returns>
-        void AddRecipe(RecipeModel recipe);
+        Task AddRecipe(RecipeModel recipe);
 
         /// <summary>
         /// Add A recipe to the database
