@@ -22,16 +22,17 @@ SOFTWARE.
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using System.Threading.Tasks;
 
 namespace RecipeConsoleUI
 {
     internal class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             try
             {
-                Bootstrap.CreateHostBuilder(args).RunConsoleAsync();
+                await Bootstrap.CreateHostBuilder(args).RunConsoleAsync();
             }
             catch (Exception ex)
             {
@@ -45,6 +46,7 @@ namespace RecipeConsoleUI
 
                 Environment.Exit(1);
             }
+            Environment.Exit(0);
         }
     }
 }

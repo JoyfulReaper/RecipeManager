@@ -52,6 +52,7 @@ namespace RecipeConsoleUI
                         options.UseSqlite(hostContext.Configuration.GetConnectionString("Default"));
                     })
                     .AddTransient<IUnitOfWork, UnitOfWork>()
+                    .AddTransient<IDataSeed, DataSeed>()
                     .AddTransient<IIngredientRepository, IngredientRepository>()
                     .AddTransient<IIRecipeRepository, RecipeRepository>()
                     .AddTransient<IRecipeService, RecipeService>()
@@ -59,7 +60,7 @@ namespace RecipeConsoleUI
                     .AddTransient<IMainMenu, MainMenu>()
                     .AddTransient<IIngredientMenu, IngredientMenu>()
                     .AddTransient<IRecipeMenu, RecipeMenu>()
-                    .AddHostedService<Application>();
+                    .AddHostedService<RecipeManager>();
                 });
         }
 

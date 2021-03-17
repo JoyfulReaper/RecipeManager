@@ -22,30 +22,41 @@ SOFTWARE.
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RecipeConsole.Menus;
+using RecipeLibrary.Data;
+using Serilog;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace RecipeConsoleUI
 {
-    public class Application : IHostedService
+    public class RecipeManager : IHostedService
     {
-        private readonly ILogger<Application> _logger;
+        private readonly ILogger<RecipeManager> _logger;
         private readonly IHostApplicationLifetime _appLifetime;
         private readonly IMainMenu _mainMenu;
+        private readonly IDataSeed _seeder;
+        private readonly RecipeManagerContext _context;
 
-        public Application(ILogger<Application> logger,
+        public RecipeManager(ILogger<RecipeManager> logger,
             IHostApplicationLifetime appLifetime,
-            IMainMenu mainMenu)
+            IMainMenu mainMenu,
+            IDataSeed seeder,
+            RecipeManagerContext context) // TODO remove this dependency
         {
+            _context = context;
             _logger = logger;
             _appLifetime = appLifetime;
             _mainMenu = mainMenu;
+            _seeder = seeder;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogDebug("Application: StartAsync() - RecipeManger Starting");
 
+            EnsureDatabaseSeeded();
             _mainMenu.Show();
 
             _appLifetime.StopApplication();
@@ -57,6 +68,31 @@ namespace RecipeConsoleUI
             _logger.LogDebug("Application: StopAsync() - RecipeManger Stopping");
 
             return Task.CompletedTask;
+        }
+
+        private void EnsureDatabaseSeeded()
+        {
+            // TODO Make this not depend on EF
+            try
+            {
+                var databaseExists = _context.Database.EnsureCreated();
+
+                if (!_context.Recipes.Any() && !_context.Ingredients.Any() || !databaseExists)
+                {
+                    _seeder.Seed();
+                }
+            }
+            catch (Exception ex)
+            {
+                var logger = Log.ForContext<Program>();
+                logger.Fatal("Unable to seed database: {exception}", ex.Message);
+
+                Console.WriteLine("Exception occured error while seeding data");
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+
+                Environment.Exit(1);
+            }
         }
     }
 }
