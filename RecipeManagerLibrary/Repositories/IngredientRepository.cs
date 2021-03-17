@@ -40,7 +40,7 @@ namespace RecipeLibrary.Repositories
 
         public void DeleteIngredientByName(string name)
         {
-            var ingredient = Context.Set<IngredientModel>().Where(i => i.Name == name).FirstOrDefault();
+            var ingredient = Context.Set<IngredientModel>().Where(i => i.Name.ToLower() == name.ToLower()).FirstOrDefault();
 
             if(ingredient == null)
             {

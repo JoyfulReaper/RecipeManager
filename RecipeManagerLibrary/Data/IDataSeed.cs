@@ -23,6 +23,9 @@ namespace RecipeLibrary.Data
 {
     public interface IDataSeed
     {
+        /// <summary>
+        /// Seed the Database
+        /// </summary>
         void Seed();
     }
 }

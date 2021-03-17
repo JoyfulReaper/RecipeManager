@@ -21,9 +21,16 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public void AddRecipe(RecipeModel recipe)
+        public async Task AddRecipe(RecipeModel recipe)
         {
-            _unitOfWork.Recipes.Add(recipe);
+            if (!await RecipeExists(recipe.Name))
+            {
+                _unitOfWork.Recipes.Add(recipe);
+            }
+            else
+            {
+                throw new ArgumentException("Recipe already exists!", nameof(recipe));
+            }
         }
 
         public void DeleteRecipe(RecipeModel recipe)
@@ -44,13 +51,13 @@ namespace RecipeLibrary.Services
 
         public async Task<RecipeModel> GetRecipeByName(string name)
         {
-            var res =  await _unitOfWork.Recipes.Find(r => r.Name == name);
+            var res =  await _unitOfWork.Recipes.Find(r => r.Name.ToLower() == name.ToLower(), "Ingredients");
             return res.FirstOrDefault();
         }
 
         public async Task<bool> RecipeExists(string name)
         {
-            var res = await _unitOfWork.Recipes.Find(i => i.Name == name);
+            var res = await _unitOfWork.Recipes.Find(i => i.Name.ToLower() == name.ToLower());
             return res.FirstOrDefault() != null;
         }
 

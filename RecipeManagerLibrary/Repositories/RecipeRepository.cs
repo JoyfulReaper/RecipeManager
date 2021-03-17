@@ -48,7 +48,7 @@ namespace RecipeLibrary.Repositories
 
         public void DeleteRecipeByName(string name)
         {
-            var recipe = Context.Set<RecipeModel>().Where(i => i.Name == name).FirstOrDefault();
+            var recipe = Context.Set<RecipeModel>().Where(i => i.Name.ToLower() == name.ToLower()).FirstOrDefault();
 
             if (recipe == null)
             {

@@ -52,7 +52,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
+                var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
                 var ingredient = await ingredientService.GetIngredientByName("Apple");
     
                 Assert.NotNull(ingredient);
@@ -65,7 +65,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
+                var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
 
                 var allIngredients = await ingredientService.GetAllIngredients();
 
@@ -82,7 +82,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
+                var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
                 ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
 
                 var isItInDb = await ingredientService.GetIngredientByName("Carrot");
@@ -97,7 +97,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
+                var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
                 ingredientService.DeleteIngredientByName("Apple");
 
 

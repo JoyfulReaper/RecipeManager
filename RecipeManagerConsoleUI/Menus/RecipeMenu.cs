@@ -109,6 +109,7 @@ namespace RecipeConsole.Menus
                     Console.WriteLine();
                     break;
                 default:
+                    _logger.LogError("RecipeMenu: ExecuteMenuSelection() - default case hit. Option: {option}", (int)option);
                     break;
             }
         }
@@ -143,8 +144,10 @@ namespace RecipeConsole.Menus
             {
                 _recipeService.DeleteRecipeByName(name);
                 _recipeService.UpdateRecipes();
+
+                ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{name}' has been deleted.");
             }
-            catch (KeyNotFoundException)
+            catch (ArgumentException)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
             }
@@ -155,7 +158,6 @@ namespace RecipeConsole.Menus
 
         private async Task NewRecipe()
         {
-            // TODO revist this after its working again
             ConsoleHelper.ColorWrite("What recipe would you like to add: ");
             var name = Console.ReadLine();
 
@@ -167,15 +169,13 @@ namespace RecipeConsole.Menus
             while (another)
             {
                 ConsoleHelper.ColorWrite("What ingredeient would you like to add: ");
-                var input = Console.ReadLine();
+                var ingredient = Console.ReadLine();
 
-                try
+                if(await _ingredientService.IngredientExists(ingredient))
                 {
-                    var ingredient = await _ingredientService.GetIngredientByName(input);
-                    var ingredientToAdd = new IngredientModel { Name = ingredient.Name };
-                    ingredients.Add(ingredientToAdd);
+                    ingredients.Add(await _ingredientService.GetIngredientByName(ingredient));
                 }
-                catch (KeyNotFoundException)
+                else
                 {
                     ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, "The ingredient does not exist!");
                     ConsoleHelper.ColorWrite("Would you like to add it? (Y/n): ");
@@ -188,7 +188,7 @@ namespace RecipeConsole.Menus
                         return;
                     }
 
-                    ingredients.Add(new IngredientModel { Name = input });
+                    ingredients.Add(new IngredientModel { Name = ingredient });
                 }
 
                 ConsoleHelper.ColorWrite("Would you like to add another ingredient? (y/N): ");
@@ -204,12 +204,12 @@ namespace RecipeConsole.Menus
 
             try
             {
-                _recipeService.AddRecipe(recipe);
+                await _recipeService.AddRecipe(recipe);
                 _recipeService.UpdateRecipes();
 
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{recipe.Name}' has been added.");
             }
-            catch (KeyNotFoundException)
+            catch (ArgumentException)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} already exists.");
             }
@@ -225,7 +225,7 @@ namespace RecipeConsole.Menus
 
             Console.WriteLine();
 
-            try
+            if(await _recipeService.RecipeExists(name))
             {
                 var recipe = await _recipeService.GetRecipeByName(name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} exists.");
@@ -235,9 +235,8 @@ namespace RecipeConsole.Menus
                 {
                     ConsoleHelper.ColorWriteLine(ConsoleColor.White, ingredient.Name);
                 }
-
             }
-            catch (KeyNotFoundException)
+            else
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
             }

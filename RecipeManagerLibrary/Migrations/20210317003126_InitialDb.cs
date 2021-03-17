@@ -2,7 +2,7 @@
 
 namespace RecipeLibrary.Migrations
 {
-    public partial class InitialDB : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace RecipeLibrary.Migrations
                 {
                     RecipeModelId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -20,19 +20,19 @@ namespace RecipeLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ingredients",
+                name: "Ingredients",
                 columns: table => new
                 {
                     IngredientModelId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(75)", nullable: false),
                     RecipeModelId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ingredients", x => x.IngredientModelId);
+                    table.PrimaryKey("PK_Ingredients", x => x.IngredientModelId);
                     table.ForeignKey(
-                        name: "FK_ingredients_Recipes_RecipeModelId",
+                        name: "FK_Ingredients_Recipes_RecipeModelId",
                         column: x => x.RecipeModelId,
                         principalTable: "Recipes",
                         principalColumn: "RecipeModelId",
@@ -40,15 +40,15 @@ namespace RecipeLibrary.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ingredients_RecipeModelId",
-                table: "ingredients",
+                name: "IX_Ingredients_RecipeModelId",
+                table: "Ingredients",
                 column: "RecipeModelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ingredients");
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "Recipes");

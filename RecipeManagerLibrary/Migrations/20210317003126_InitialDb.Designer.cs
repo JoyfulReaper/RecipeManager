@@ -9,8 +9,8 @@ using RecipeLibrary.Data;
 namespace RecipeLibrary.Migrations
 {
     [DbContext(typeof(RecipeManagerContext))]
-    [Migration("20210316010630_InitialDB")]
-    partial class InitialDB
+    [Migration("20210317003126_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,8 @@ namespace RecipeLibrary.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<int?>("RecipeModelId")
                         .HasColumnType("INTEGER");
@@ -34,7 +35,7 @@ namespace RecipeLibrary.Migrations
 
                     b.HasIndex("RecipeModelId");
 
-                    b.ToTable("ingredients");
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("RecipeLibrary.Models.RecipeModel", b =>
@@ -44,7 +45,8 @@ namespace RecipeLibrary.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("RecipeModelId");
 

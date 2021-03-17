@@ -52,7 +52,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
+                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
                 var recipe = await recipeService.GetRecipeByName("Apple Pie");
 
                 Assert.NotNull(recipe);
@@ -65,7 +65,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
+                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
 
                 var allRecipes = await recipeService.GetAllRecipes();
 
@@ -85,7 +85,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
+                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
 
                 RecipeModel recipe = new RecipeModel
                 {
@@ -163,7 +163,7 @@ namespace RecipeTests.Services
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
-                var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
+                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
                 recipeService.DeleteRecipeByName("Apple Pie");
 
                 await Assert.ThrowsAsync<KeyNotFoundException>(async () => await recipeService.GetRecipeByName("Apple Pie"));

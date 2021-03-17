@@ -46,6 +46,7 @@ namespace RecipeConsole.Menus
             while (true)
             {
                 ConsoleHelper.DefaultColor = ConsoleColor.Blue;
+                Console.Clear();
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Yellow, "Welcome to Recipe Manager");
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Cyan, "https://github.com/JoyfulReaper/RecipeManager");
                 Console.WriteLine();
@@ -69,13 +70,19 @@ namespace RecipeConsole.Menus
 
                     if (!Enum.IsDefined(typeof(MainMenuOption), option))
                     {
-                        _logger.LogWarning("Option could not be convertion to MainMenuOption Enum");
+                        _logger.LogWarning("MainMenu: Option could not be converted to MainMenuOption Enum");
                         valid = false;
                     }
 
                 }
 
                 MainMenuOption choice = (MainMenuOption)option;
+
+                if (choice == MainMenuOption.Quit)
+                {
+                    return;
+                }
+
                 ExecuteMenuSelection(choice);
             }
         }
@@ -85,7 +92,7 @@ namespace RecipeConsole.Menus
             switch (option)
             {
                 case MainMenuOption.InValid:
-                    _logger.LogWarning("ExecuteMenuSelection recieved invalid option");
+                    _logger.LogWarning("MainMenu: ExecuteMenuSelection() - recieved invalid option");
                     break;
                 case MainMenuOption.RecipeMenu:
                     Console.WriteLine();
@@ -95,10 +102,8 @@ namespace RecipeConsole.Menus
                     Console.WriteLine();
                     _ingredientMenu.Show();
                     break;
-                case MainMenuOption.Quit:
-                    Environment.Exit(0);
-                    break;
                 default:
+                    _logger.LogError("MainMain: ExecuteMenuSelection() - default case hit. Option: {option}", (int)option);
                     break;
             }
         }

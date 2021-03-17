@@ -48,6 +48,9 @@ namespace RecipeLibrary.Repositories
         /// <returns></returns>
         Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
 
+        Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate, 
+            string includeProperties = "");
+
         /// <summary>
         /// Add and Entity
         /// </summary>

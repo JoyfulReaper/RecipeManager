@@ -20,9 +20,9 @@ SOFTWARE.
 */
 
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using RecipeLibrary.Models;
 using RecipeLibrary.Services;
-using Serilog;
 
 namespace RecipeLibrary.Data
 {
@@ -30,18 +30,23 @@ namespace RecipeLibrary.Data
     {
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeService _recipeService;
+        private readonly ILogger _logger;
 
         public DataSeed(IIngredientService ingredientService,
-            IRecipeService recipeService)
+            IRecipeService recipeService,
+            ILogger<IDataSeed> logger)
         {
             _ingredientService = ingredientService;
             _recipeService = recipeService;
+            _logger = logger;
         }
 
         public void Seed()
         {
-            ILogger logger = Log.ForContext(typeof(DataSeed));
-            logger.Debug("Seeding Database");
+            //ILogger logger = Log.ForContext(typeof(DataSeed));
+            //logger.Debug("Seeding Database");
+
+            _logger.LogInformation("DataSeed: Seed() - Seeding Database.");
 
             _recipeService.AddRecipe(new RecipeModel
             {

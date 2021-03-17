@@ -23,7 +23,8 @@ namespace RecipeLibrary.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<int?>("RecipeModelId")
                         .HasColumnType("INTEGER");
@@ -32,7 +33,7 @@ namespace RecipeLibrary.Migrations
 
                     b.HasIndex("RecipeModelId");
 
-                    b.ToTable("ingredients");
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("RecipeLibrary.Models.RecipeModel", b =>
@@ -42,7 +43,8 @@ namespace RecipeLibrary.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("RecipeModelId");
 
