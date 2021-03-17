@@ -48,6 +48,7 @@ namespace RecipeConsole.Menus
 
         public async Task Show()
         {
+            Console.Clear();
             ConsoleHelper.DefaultColor = ConsoleColor.Blue;
             ConsoleHelper.ColorWriteLine(ConsoleColor.Yellow, "Recipe Menu");
             Console.WriteLine();
