@@ -48,15 +48,30 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test_WithDB_GetRecipeByName()
+        public async Task Test_WithDB_AddRecipe()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
-                var recipe = await recipeService.GetRecipeByName("Apple Pie");
 
-                Assert.NotNull(recipe);
-                Assert.Equal("Apple Pie", recipe.Name);
+                RecipeModel recipe = new RecipeModel
+                {
+                    Name = "Chips",
+                    Ingredients = new List<IngredientModel> { new IngredientModel { Name = "Potato" },
+                        new IngredientModel { Name = "Oil" }
+                    }
+                };
+
+                await recipeService.AddRecipe(recipe);
+                recipeService.UpdateRecipes();
+
+                var isItInDb = await recipeService.GetRecipeByName("Chips");
+
+                Assert.NotNull(isItInDb);
+                Assert.Equal("Chips", isItInDb.Name);
+
+                Assert.Collection(isItInDb.Ingredients, item => Assert.Equal("Potato", item.Name),
+                    item => Assert.Equal("Oil", item.Name));
             }
         }
 
@@ -74,99 +89,128 @@ namespace RecipeTests.Services
                 Assert.Collection(allRecipes, item => Assert.Equal("Fruit Salad", item.Name),
                     item => Assert.Equal("Apple Pie", item.Name));
 
-                Assert.Collection(allRecipes.FirstOrDefault().Ingredients, item => Assert.Equal("Apple", item.Name),
+                Assert.Collection(allRecipes.FirstOrDefault().Ingredients, item => Assert.Equal("Pineapple", item.Name),
                     item => Assert.Equal("Orange", item.Name),
                     item => Assert.Equal("Peach", item.Name));
             }
         }
 
-        [Fact]
-        public async Task Test_WithDB_AddRecipe()
-        {
-            using (var context = new RecipeManagerContext(ContextOptions))
-            {
-                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
-
-                RecipeModel recipe = new RecipeModel
-                {
-                    Name = "Chips",
-                    Ingredients = new List<IngredientModel> { new IngredientModel { Name = "Potato" },
-                        new IngredientModel { Name = "Oil" }
-                    }
-                };
-
-                recipeService.AddRecipe(recipe);
-                recipeService.UpdateRecipes();
-
-                var isItInDb = await recipeService.GetRecipeByName("Chips");
-
-                Assert.NotNull(isItInDb);
-                Assert.Equal("Chips", isItInDb.Name);
-
-                Assert.Collection(isItInDb.Ingredients, item => Assert.Equal("Potato", item.Name),
-                    item => Assert.Equal("Oil", item.Name));
-            }
-        }
-
-        [Fact]
-        public async Task Test_WithDB_AddIngredient()
-        {
-            //TODO re-write test
-
-            //using (var context = new RecipeManagerContext(ContextOptions))
-            //{
-            //    var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
-            //    var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
-
-            //    ingredientService.AddIngredient(new IngredientModel { Name = "Cherry" });
-
-            //    await recipeService.AddIngredient(await recipeService.GetRecipeByName("Fruit Salad"),
-            //        await ingredientService.GetIngredientByName("Cherry"));
-
-
-            //    var isItInDb = await recipeService.GetRecipeByName("Fruit Salad");
-            //    Assert.NotNull(isItInDb);
-            //    Assert.Equal("Fruit Salad", isItInDb.Name);
-
-            //    Assert.Collection(isItInDb.Ingredients, item => Assert.Equal("Apple", item.Name),
-            //        item => Assert.Equal("Orange", item.Name),
-            //        item => Assert.Equal("Peach", item.Name),
-            //        item => Assert.Equal("Cherry", item.Name));
-            //}
-        }
-
-        [Fact]
-        public async Task Test_WithDB_RemoveIngredientFromRecipe()
-        {
-            //TODO - Re-write test
-
-            //using (var context = new RecipeManagerContext(ContextOptions))
-            //{
-            //    var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
-            //    var ingredentService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
-
-            //    await recipeService.DeleteIngredient(await recipeService.GetRecipeByName("Apple Pie"),
-            //        await ingredentService.GetIngredientByName("Crust"));
-
-            //    var recipe = await recipeService.GetRecipeByName("Apple Pie");
-
-            //    Assert.NotNull(recipe);
-            //    Assert.Equal("Apple Pie", recipe.Name);
-
-            //    Assert.Collection(recipe.Ingredients, item => Assert.Equal("Apple", item.Name),
-            //        item => Assert.Equal("Sugar", item.Name));
-            //}
-        }
+        // TODO DeleteRecipe Test
 
         [Fact]
         public async Task Test_WithDB_DeleteByNameRecipe()
         {
+            //TODO figure out why this one is failing
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
                 recipeService.DeleteRecipeByName("Apple Pie");
+                recipeService.UpdateRecipes();
 
-                await Assert.ThrowsAsync<KeyNotFoundException>(async () => await recipeService.GetRecipeByName("Apple Pie"));
+                Assert.Null(await recipeService.GetRecipeByName("Apple Pie"));
+            }
+        }
+
+        [Fact]
+        public async Task Test_WithDB_GetRecipeByName()
+        {
+            using (var context = new RecipeManagerContext(ContextOptions))
+            {
+                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
+                var recipe = await recipeService.GetRecipeByName("Apple Pie");
+
+                Assert.NotNull(recipe);
+                Assert.Equal("Apple Pie", recipe.Name);
+            }
+        }
+
+        [Fact]
+        public async Task Test_WithDB_RecipeExists()
+        {
+            using (var context = new RecipeManagerContext(ContextOptions))
+            {
+                var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
+                var exists = await recipeService.RecipeExists("Fruit Salad");
+
+                Assert.True(exists);
+            }
+        }
+
+        //[Fact]
+        //public async Task Test_WithDB_AddIngredient()
+        //{
+        //    TODO re-write test
+
+        //    using (var context = new RecipeManagerContext(ContextOptions))
+        //    {
+        //        var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
+        //        var ingredientService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
+
+        //        ingredientService.AddIngredient(new IngredientModel { Name = "Cherry" });
+
+        //        await recipeService.AddIngredient(await recipeService.GetRecipeByName("Fruit Salad"),
+        //            await ingredientService.GetIngredientByName("Cherry"));
+
+
+        //        var isItInDb = await recipeService.GetRecipeByName("Fruit Salad");
+        //        Assert.NotNull(isItInDb);
+        //        Assert.Equal("Fruit Salad", isItInDb.Name);
+
+        //        Assert.Collection(isItInDb.Ingredients, item => Assert.Equal("Apple", item.Name),
+        //            item => Assert.Equal("Orange", item.Name),
+        //            item => Assert.Equal("Peach", item.Name),
+        //            item => Assert.Equal("Cherry", item.Name));
+        //    }
+        //}
+
+        //[Fact]
+        //public async Task Test_WithDB_RemoveIngredientFromRecipe()
+        //{
+        //    TODO - Re - write test
+
+        //    using (var context = new RecipeManagerContext(ContextOptions))
+        //    {
+        //        var recipeService = new RecipeService(new UnitOfWork(context), new NullLogger<RecipeService>());
+        //        var ingredentService = new IngredientService(new UnitOfWork(context), new NullLogger<IngredientService>());
+
+        //        await recipeService.DeleteIngredient(await recipeService.GetRecipeByName("Apple Pie"),
+        //            await ingredentService.GetIngredientByName("Crust"));
+
+        //        var recipe = await recipeService.GetRecipeByName("Apple Pie");
+
+        //        Assert.NotNull(recipe);
+        //        Assert.Equal("Apple Pie", recipe.Name);
+
+        //        Assert.Collection(recipe.Ingredients, item => Assert.Equal("Apple", item.Name),
+        //            item => Assert.Equal("Sugar", item.Name));
+        //    }
+        //}
+
+        internal override void Seed()
+        {
+            using (var context = new RecipeManagerContext(ContextOptions))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                List<IngredientModel> fruitSaladIngredients = new List<IngredientModel>() {
+                    new IngredientModel { Name = "Pineapple" },
+                    new IngredientModel { Name = "Orange" },
+                    new IngredientModel { Name = "Peach" },
+                };
+
+                var fruitSalad = new RecipeModel { Name = "Fruit Salad", Ingredients = fruitSaladIngredients };
+
+                List<IngredientModel> applePieIngredients = new List<IngredientModel>() {
+                    new IngredientModel { Name = "Apple" },
+                    new IngredientModel { Name = "Crust" },
+                    new IngredientModel { Name = "Sugar" },
+                };
+
+                var applePie = new RecipeModel { Name = "Apple Pie", Ingredients = applePieIngredients };
+
+                context.AddRange(fruitSalad, applePie);
+                context.SaveChanges();
             }
         }
     }
