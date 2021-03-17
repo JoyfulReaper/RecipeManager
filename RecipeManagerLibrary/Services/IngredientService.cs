@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using RecipeLibrary.Data;
 using RecipeLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,10 +23,16 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public void AddIngredient(IngredientModel ingredient)
+        public async Task AddIngredient(IngredientModel ingredient)
         {
-            _unitOfWork.Ingredients.Add(ingredient);
-            //_unitOfWork.Complete();
+            if (!await IngredientExists(ingredient.Name))
+            {
+                _unitOfWork.Ingredients.Add(ingredient);
+            }
+            else
+            {
+                throw new ArgumentException("Ingredient already exists!", nameof(ingredient));
+            }
         }
 
         public void DeleteIngredient(IngredientModel ingredient)
@@ -48,13 +55,13 @@ namespace RecipeLibrary.Services
 
         public async Task<IngredientModel> GetIngredientByName(string name)
         {
-            var res = await _unitOfWork.Ingredients.Find(i => i.Name == name);
+            var res = await _unitOfWork.Ingredients.Find(i => i.Name.ToLower() == name.ToLower());
             return res.FirstOrDefault();
         }
 
         public async Task<bool> IngredientExists(string name)
         {
-            var res = await _unitOfWork.Ingredients.Find(i => i.Name == name);
+            var res = await _unitOfWork.Ingredients.Find(i => i.Name.ToLower() == name.ToLower());
             return res.FirstOrDefault() != null;
         }
 

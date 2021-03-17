@@ -32,7 +32,7 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="recipe">Ingredient to add</param>
         /// <returns></returns>
-        void AddIngredient(IngredientModel ingredient);
+        Task AddIngredient(IngredientModel ingredient);
 
         /// <summary>
         /// Delete an ingredient from the database
