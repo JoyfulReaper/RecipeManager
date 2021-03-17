@@ -102,7 +102,7 @@ namespace RecipeConsole.Menus
                     Console.WriteLine();
                     break;
                 default:
-                    _logger.LogError("IngredientMain: ExecuteMenuSelection() - default case hit. Option: {option}", (int)option);
+                    _logger.LogError("IngredientMenu: ExecuteMenuSelection() - default case hit. Option: {option}", (int)option);
                     break;
             }
         }
