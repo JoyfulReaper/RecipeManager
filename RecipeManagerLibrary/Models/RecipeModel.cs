@@ -39,10 +39,9 @@ namespace RecipeLibrary.Models
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
-        // TODO need away of incorparating quantities
         /// <summary>
         /// Ingredients in the Recipe
         /// </summary>
-        public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
+        public ICollection<IngredientModel> Ingredients { get; set; }
     }
 }
