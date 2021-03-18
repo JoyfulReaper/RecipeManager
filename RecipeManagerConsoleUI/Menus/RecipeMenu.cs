@@ -26,7 +26,7 @@ using RecipeLibrary.Services;
 using RecipeLibrary.Models;
 using Microsoft.Extensions.Logging;
 
-namespace RecipeConsole.Menus
+namespace RecipeConsoleUI.Menus
 {
     public class RecipeMenu : IRecipeMenu
     {
@@ -48,6 +48,8 @@ namespace RecipeConsole.Menus
 
         public async Task Show()
         {
+            _logger.LogDebug("[RecipeMenu] - Showing");
+
             ConsoleHelper.DefaultColor = ConsoleColor.Blue;
             ConsoleHelper.ColorWriteLine(ConsoleColor.Yellow, "Recipe Menu");
             Console.WriteLine();
@@ -116,6 +118,7 @@ namespace RecipeConsole.Menus
 
         private async Task ListRecipe()
         {
+            _logger.LogDebug("[RecipeMenu] - Recipe List");
             Console.WriteLine();
             ConsoleHelper.ColorWriteLine("Known Recipes: ");
 
@@ -137,6 +140,8 @@ namespace RecipeConsole.Menus
 
         private async Task DeleteRecipe()
         {
+            _logger.LogDebug("[RecipeMenu] - Recipe Delete");
+
             ConsoleHelper.ColorWrite("What recipe would you like to delete: ");
             var name = Console.ReadLine();
 
@@ -145,10 +150,12 @@ namespace RecipeConsole.Menus
                 _recipeService.DeleteRecipeByName(name);
                 _recipeService.UpdateRecipes();
 
+                _logger.LogDebug("[IngredientMenu] - Recipe Delete: {ingredient} - Success", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{name}' has been deleted.");
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
+                _logger.LogDebug(ex, "[IngredientMenu] - Recipe Delete: {ingredient} - Failure", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
             }
 
@@ -158,6 +165,8 @@ namespace RecipeConsole.Menus
 
         private async Task NewRecipe()
         {
+            _logger.LogDebug("[RecipeMenu] - Recipe New");
+
             ConsoleHelper.ColorWrite("What recipe would you like to add: ");
             var name = Console.ReadLine();
 
@@ -208,10 +217,12 @@ namespace RecipeConsole.Menus
                 await _recipeService.AddRecipe(recipe);
                 _recipeService.UpdateRecipes();
 
+                _logger.LogDebug("[RecipeMenu] - Recipe Add: {recipe} - Success", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{recipe.Name}' has been added.");
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
+                _logger.LogDebug(ex, "[RecipeMenu] - Recipe Add: {recipe} - Failure", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} already exists.");
             }
 
@@ -221,6 +232,8 @@ namespace RecipeConsole.Menus
 
         private async Task LookupRecipe()
         {
+            _logger.LogDebug("[RecipeMenu] - Recipe Lookup");
+
             ConsoleHelper.ColorWrite("What Recipe would you like to lookup: ");
             var name = Console.ReadLine();
 
