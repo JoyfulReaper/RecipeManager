@@ -48,15 +48,36 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test_WithDB_GetIngredientByName()
+        public async Task Test_WithDB_AddIngredient()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
-                var ingredient = await ingredientService.GetIngredientByName("Apple");
-    
-                Assert.NotNull(ingredient);
-                Assert.Equal("Apple", ingredient.Name);
+                await ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
+
+                ingredientService.UpdateIngredients();
+
+                var isItInDb = await ingredientService.GetIngredientByName("Carrot");
+
+                Assert.NotNull(isItInDb);
+                Assert.Equal("Carrot", isItInDb.Name);
+            }
+        }
+
+        // TODO: DeleteIngredient test
+
+        [Fact]
+        public async Task Test_WithDB_DeleteIngredientByName()
+        {
+            using (var context = new RecipeManagerContext(ContextOptions))
+            {
+                var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
+                ingredientService.DeleteIngredientByName("Apple");
+                ingredientService.UpdateIngredients();
+
+                var inDB = await ingredientService.GetIngredientByName("Apple");
+
+                Assert.Null(inDB);
             }
         }
 
@@ -78,30 +99,44 @@ namespace RecipeTests.Services
         }
 
         [Fact]
-        public async Task Test_WithDB_AddIngredient()
+        public async Task Test_WithDB_GetIngredientByName()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
-                ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
-
-                var isItInDb = await ingredientService.GetIngredientByName("Carrot");
-
-                Assert.NotNull(isItInDb);
-                Assert.Equal("Carrot", isItInDb.Name);
+                var ingredient = await ingredientService.GetIngredientByName("Apple");
+    
+                Assert.NotNull(ingredient);
+                Assert.Equal("Apple", ingredient.Name);
             }
         }
 
         [Fact]
-        public async Task Test_WithDB_DeleteIngredientByName()
+        public async Task Test_WithDB_IngredientExists()
         {
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
-                ingredientService.DeleteIngredientByName("Apple");
+                var ingredient = await ingredientService.GetIngredientByName("Apple");
 
+                Assert.NotNull(ingredient);
+                Assert.Equal("Apple", ingredient.Name);
+            }
+        }
 
-                await Assert.ThrowsAsync<KeyNotFoundException>(async () => await ingredientService.GetIngredientByName("Apple"));
+        internal override void Seed()
+        {
+            using (var context = new RecipeManagerContext(ContextOptions))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                var apple = new IngredientModel { Name = "Apple" };
+                var orange = new IngredientModel { Name = "Orange" };
+                var peach = new IngredientModel { Name = "Peach" };
+
+                context.AddRange(apple, orange, peach);
+                context.SaveChanges();
             }
         }
     }

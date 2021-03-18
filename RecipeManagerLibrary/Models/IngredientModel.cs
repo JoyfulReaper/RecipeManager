@@ -19,6 +19,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -50,5 +51,7 @@ namespace RecipeLibrary.Models
         /// The reciple to make the ingredeint
         /// </summary>
         RecipeModel Recipe { get; set; }
+
+        public ICollection<RecipeModel> recipes { get; set; }
     }
 }

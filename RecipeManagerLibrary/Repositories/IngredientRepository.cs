@@ -22,7 +22,6 @@ SOFTWARE.
 
 using RecipeLibrary.Data;
 using RecipeLibrary.Models;
-using Serilog;
 using System;
 using System.Linq;
 

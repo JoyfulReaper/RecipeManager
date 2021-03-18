@@ -36,32 +36,6 @@ namespace RecipeTests.Services
             Seed();
         }
 
-        private void Seed()
-        {
-            using (var context = new RecipeManagerContext(ContextOptions))
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-
-                List<IngredientModel> fruitSaladIngredients = new List<IngredientModel>() {
-                    new IngredientModel { Name = "Apple" },
-                    new IngredientModel { Name = "Orange" },
-                    new IngredientModel { Name = "Peach" },
-                };
-
-                var fruitSalad = new RecipeModel { Name = "Fruit Salad", Ingredients = fruitSaladIngredients };
-
-                List<IngredientModel> applePieIngredients = new List<IngredientModel>() {
-                    new IngredientModel { Name = "Apple" },
-                    new IngredientModel { Name = "Crust" },
-                    new IngredientModel { Name = "Sugar" },
-                };
-
-                var applePie = new RecipeModel { Name = "Apple Pie", Ingredients = applePieIngredients };
-
-                context.AddRange(fruitSalad, applePie);
-                context.SaveChanges();
-            }
-        }
+        internal abstract void Seed();
     }
 }
