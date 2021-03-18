@@ -143,13 +143,13 @@ namespace RecipeConsoleUI.Menus
                 _ingredientService.DeleteIngredientByName(name);
                 _ingredientService.UpdateIngredients();
 
-                _logger.LogDebug("[IngredientMenu] - Ingredient Delete: {imgredient} - Success", name);
+                _logger.LogDebug("[IngredientMenu] - Ingredient Delete: {ingredient} - Success", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{name}' has been deleted.");
             }
             catch (ArgumentException ex)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
-                _logger.LogDebug(ex, "[IngredientMenu] - Ingredient Delete: {imgredient} - Failure", name);
+                _logger.LogDebug(ex, "[IngredientMenu] - Ingredient Delete: {ingredient} - Failure", name);
             }
 
             Console.WriteLine();
@@ -169,12 +169,12 @@ namespace RecipeConsoleUI.Menus
                 await _ingredientService.AddIngredient(newIngreditent);
                 _ingredientService.UpdateIngredients();
 
-                _logger.LogDebug("[IngredientMenu] - Ingredient Add: {imgredient} - Success", name);
+                _logger.LogDebug("[IngredientMenu] - Ingredient Add: {ingredient} - Success", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{newIngreditent.Name}' has been added.");
             }
             catch (ArgumentException ex)
             {
-                _logger.LogDebug(ex, "[IngredientMenu] - Ingredient Add: {imgredient} - Failue", name);
+                _logger.LogDebug(ex, "[IngredientMenu] - Ingredient Add: {ingredient} - Failue", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} already exists.");
             }
 
