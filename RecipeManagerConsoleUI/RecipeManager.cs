@@ -21,7 +21,7 @@ SOFTWARE.
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using RecipeConsole.Menus;
+using RecipeConsoleUI.Menus;
 using RecipeLibrary.Data;
 using Serilog;
 using System;

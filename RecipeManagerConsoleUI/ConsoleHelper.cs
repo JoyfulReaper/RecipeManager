@@ -25,7 +25,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 
-namespace RecipeConsole
+namespace RecipeConsoleUI
 {
     public static class ConsoleHelper
     {

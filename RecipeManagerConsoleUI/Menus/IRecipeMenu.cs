@@ -21,7 +21,7 @@ SOFTWARE.
 
 using System.Threading.Tasks;
 
-namespace RecipeConsole.Menus
+namespace RecipeConsoleUI.Menus
 {
     public interface IRecipeMenu
     {

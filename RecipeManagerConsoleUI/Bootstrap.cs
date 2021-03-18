@@ -23,7 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RecipeConsole.Menus;
+using RecipeConsoleUI.Menus;
 using RecipeLibrary.Data;
 using RecipeLibrary.Repositories;
 using RecipeLibrary.Services;
