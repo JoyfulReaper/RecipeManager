@@ -10,9 +10,6 @@ namespace RecipeLibrary.Services
 {
     public class IngredientService : IIngredientService
     {
-        // TODO add logging
-        // TODO add error checking
-
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<IngredientService> _logger;
 
@@ -28,9 +25,11 @@ namespace RecipeLibrary.Services
             if (!await IngredientExists(ingredient.Name))
             {
                 _unitOfWork.Ingredients.Add(ingredient);
+                _logger.LogDebug("IngredientService: AddIngredient() - Ingredient {ingredient} added.", ingredient.Name);
             }
             else
             {
+                _logger.LogDebug("IngredientService: AddIngredient() - Attempted to add Ingredient {ingredient} that already existed.", ingredient.Name);
                 throw new ArgumentException("Ingredient already exists!", nameof(ingredient));
             }
         }
@@ -38,36 +37,42 @@ namespace RecipeLibrary.Services
         public void DeleteIngredient(IngredientModel ingredient)
         {
             _unitOfWork.Ingredients.Remove(ingredient);
-            //_unitOfWork.Complete();
+            _logger.LogDebug("IngredientService: DeleteIngredient() - Deleted ingredient {ingredient}", ingredient.Name);
         }
 
         public void DeleteIngredientByName(string name)
         {
             _unitOfWork.Ingredients.DeleteIngredientByName(name);
-            //_unitOfWork.Complete();
+            _logger.LogDebug("IngredientService: DeleteIngredientByName() - Deleted ingredient {ingredient} by name.", name);
         }
 
         public async Task<List<IngredientModel>> GetAllIngredients()
         {
             var res = await _unitOfWork.Ingredients.GetAll();
+            _logger.LogDebug("IngredientService: GetAllIngredient() - All ingredients were requested.");
             return res.ToList();
         }
 
         public async Task<IngredientModel> GetIngredientByName(string name)
         {
             var res = await _unitOfWork.Ingredients.Find(i => i.Name.ToLower() == name.ToLower());
+            _logger.LogDebug("IngredientService: GetIngredientByName() - Retreived ingredient {ingredient} by name.", name);
             return res.FirstOrDefault();
         }
 
         public async Task<bool> IngredientExists(string name)
         {
             var res = await _unitOfWork.Ingredients.Find(i => i.Name.ToLower() == name.ToLower());
-            return res.FirstOrDefault() != null;
+            var exists = res.FirstOrDefault() != null;
+
+            _logger.LogDebug("IngredientService: IngredientExists() - Checked if ingredient {ingredient} exists: {exists} ", name, exists);
+            return exists;
         }
 
         public void UpdateIngredients()
         {
             _unitOfWork.Complete();
+            _logger.LogDebug("IngredientService: Commited changes to database");
         }
     }
 }

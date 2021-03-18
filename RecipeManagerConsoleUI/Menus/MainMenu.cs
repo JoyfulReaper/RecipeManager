@@ -22,7 +22,7 @@ SOFTWARE.
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace RecipeConsole.Menus
+namespace RecipeConsoleUI.Menus
 {
     public class MainMenu : IMainMenu
     {
@@ -45,6 +45,8 @@ namespace RecipeConsole.Menus
         {
             while (true)
             {
+                _logger.LogDebug("[MainMenu] - Showing");
+
                 ConsoleHelper.DefaultColor = ConsoleColor.Blue;
                 Console.Clear();
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Yellow, "Welcome to Recipe Manager");

@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RecipeConsole.Menus
+namespace RecipeConsoleUI.Menus
 {
     public class IngredientMenu : IIngredientMenu
     {
@@ -45,6 +45,8 @@ namespace RecipeConsole.Menus
 
         public async Task Show()
         {
+            _logger.LogDebug("[IngredientMenu] - Showing");
+
             ConsoleHelper.DefaultColor = ConsoleColor.Blue;
             ConsoleHelper.ColorWriteLine(ConsoleColor.Yellow, "Ingredient Menu");
             Console.WriteLine();
@@ -109,6 +111,8 @@ namespace RecipeConsole.Menus
 
         private async Task LookupIngredient()
         {
+            _logger.LogDebug("[IngredientMenu] - Ingredient Lookup");
+
             ConsoleHelper.ColorWrite("What ingredient would you like to lookup: ");
             var name = Console.ReadLine();
 
@@ -129,6 +133,8 @@ namespace RecipeConsole.Menus
 
         private async Task DeleteIngredient()
         {
+            _logger.LogDebug("[IngredientMenu] - Ingredient Delete");
+
             ConsoleHelper.ColorWrite("What ingredient would you like to delete: ");
             var name = Console.ReadLine();
 
@@ -137,11 +143,13 @@ namespace RecipeConsole.Menus
                 _ingredientService.DeleteIngredientByName(name);
                 _ingredientService.UpdateIngredients();
 
+                _logger.LogDebug("[IngredientMenu] - Ingredient Delete: {imgredient} - Success", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{name}' has been deleted.");
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} does not exist.");
+                _logger.LogDebug(ex, "[IngredientMenu] - Ingredient Delete: {imgredient} - Failure", name);
             }
 
             Console.WriteLine();
@@ -150,6 +158,8 @@ namespace RecipeConsole.Menus
 
         private async Task NewIngredient()
         {
+            _logger.LogDebug("[IngredientMenu] - Ingredient New");
+
             ConsoleHelper.ColorWrite("What ingredient would you like to add: ");
             var name = Console.ReadLine();
 
@@ -159,10 +169,12 @@ namespace RecipeConsole.Menus
                 await _ingredientService.AddIngredient(newIngreditent);
                 _ingredientService.UpdateIngredients();
 
+                _logger.LogDebug("[IngredientMenu] - Ingredient Add: {imgredient} - Success", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.Green, $"'{newIngreditent.Name}' has been added.");
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
+                _logger.LogDebug(ex, "[IngredientMenu] - Ingredient Add: {imgredient} - Failue", name);
                 ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, $"{name} already exists.");
             }
 
@@ -172,6 +184,8 @@ namespace RecipeConsole.Menus
 
         private async Task ListIngredients()
         {
+            _logger.LogDebug("[IngredientMenu] - Ingredient List");
+
             Console.WriteLine();
             ConsoleHelper.ColorWriteLine("Known Ingredients: ");
 

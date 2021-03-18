@@ -45,7 +45,7 @@ namespace RecipeLibrary.Data
 
         public int Complete()
         {
-            _logger.LogDebug("UnitOfWork: Complete() - Saving database changes.");
+            _logger.LogTrace("UnitOfWork: Complete() - Saving database changes.");
             return _context.SaveChanges();
         }
 

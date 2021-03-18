@@ -26,9 +26,11 @@ namespace RecipeLibrary.Services
             if (!await RecipeExists(recipe.Name))
             {
                 _unitOfWork.Recipes.Add(recipe);
+                _logger.LogDebug("RecipeService: AddRecipe() - Recipe {recipe} added.", recipe.Name);
             }
             else
             {
+                _logger.LogDebug("RecipeService: AddRecipe() - Attempted to add recipe {recipe} that already existed.", recipe.Name);
                 throw new ArgumentException("Recipe already exists!", nameof(recipe));
             }
         }
@@ -36,34 +38,42 @@ namespace RecipeLibrary.Services
         public void DeleteRecipe(RecipeModel recipe)
         {
             _unitOfWork.Recipes.Remove(recipe);
+            _logger.LogDebug("RecipeService: DeleteRecipe() - Recipe {recipe} deleted.", recipe.Name);
         }
 
         public void DeleteRecipeByName(string name)
         {
             _unitOfWork.Recipes.DeleteRecipeByName(name);
+            _logger.LogDebug("RecipeService: DeleteRecipeByName() - Deleted recipe {recipe} by name.", name);
         }
 
         public async Task<List<RecipeModel>> GetAllRecipes()
         {
             var res = await _unitOfWork.Recipes.GetAllRecipesWithIngredients();
+            _logger.LogDebug("RecipeService: GetAllRecipes() - All recipes were requested.");
             return res.ToList();
         }
 
         public async Task<RecipeModel> GetRecipeByName(string name)
         {
             var res =  await _unitOfWork.Recipes.Find(r => r.Name.ToLower() == name.ToLower(), "Ingredients");
+            _logger.LogDebug("RecipeService: GetRecipeByName() - Retreived recipe {recipe} by name.", name);
             return res.FirstOrDefault();
         }
 
         public async Task<bool> RecipeExists(string name)
         {
             var res = await _unitOfWork.Recipes.Find(i => i.Name.ToLower() == name.ToLower());
-            return res.FirstOrDefault() != null;
+            var exists = res.FirstOrDefault() != null;
+
+            _logger.LogDebug("RecipeService: RecipeExists() - Checked if recipe {recipe} exists: {exists} ", name, exists);
+            return exists;
         }
 
         public void UpdateRecipes()
         {
             _unitOfWork.Complete();
+            _logger.LogDebug("RecipeService: Commited changes to database");
         }
     }
 }
