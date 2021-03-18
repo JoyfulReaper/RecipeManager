@@ -180,6 +180,7 @@ namespace RecipeConsole.Menus
                     ConsoleHelper.ColorWriteLine(ConsoleColor.DarkYellow, "The ingredient does not exist!");
                     ConsoleHelper.ColorWrite("Would you like to add it? (Y/n): ");
                     var add = Console.ReadLine();
+                    Console.WriteLine();
 
                     if (Char.ToUpperInvariant(add[0]) == 'N')
                     {
