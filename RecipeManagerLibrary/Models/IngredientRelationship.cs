@@ -28,6 +28,8 @@ namespace RecipeLibrary.Models
         public Ingredient Ingredient { get; set; }
         public int RecipeId { get; set; }
         public Recipe Recipe { get; set; }
+        public int MeasurementId { get; set; }
+        public Measurement measurement { get; set; }
         public int Quantity { get; set; }
     }
 }

@@ -78,8 +78,8 @@ namespace RecipeLibrary.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IngredientId = table.Column<int>(type: "INTEGER", nullable: false),
                     RecipeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    MeasurementId = table.Column<int>(type: "INTEGER", nullable: true)
+                    MeasurementId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,7 +95,7 @@ namespace RecipeLibrary.Migrations
                         column: x => x.MeasurementId,
                         principalTable: "Measurements",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_IngredientRelationship_Recipes_RecipeId",
                         column: x => x.RecipeId,
