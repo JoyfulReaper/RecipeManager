@@ -163,7 +163,7 @@ namespace RecipeConsoleUI.Menus
             ConsoleHelper.ColorWrite("What ingredient would you like to add: ");
             var name = Console.ReadLine();
 
-            IngredientModel newIngreditent = new IngredientModel { Name = name };
+            Ingredient newIngreditent = new Ingredient { Name = name };
             try
             {
                 await _ingredientService.AddIngredient(newIngreditent);
@@ -189,7 +189,7 @@ namespace RecipeConsoleUI.Menus
             Console.WriteLine();
             ConsoleHelper.ColorWriteLine("Known Ingredients: ");
 
-            List<IngredientModel> ingredientList = await _ingredientService.GetAllIngredients();
+            List<Ingredient> ingredientList = await _ingredientService.GetAllIngredients();
 
             for (int i = 0; i < ingredientList.Count; i++)
             {

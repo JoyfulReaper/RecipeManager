@@ -122,7 +122,7 @@ namespace RecipeConsoleUI.Menus
             Console.WriteLine();
             ConsoleHelper.ColorWriteLine("Known Recipes: ");
 
-            List<RecipeModel> recipeList = await _recipeService.GetAllRecipes();
+            List<Recipe> recipeList = await _recipeService.GetAllRecipes();
 
             for (int i = 0; i < recipeList.Count; i++)
             {
@@ -170,10 +170,10 @@ namespace RecipeConsoleUI.Menus
             ConsoleHelper.ColorWrite("What recipe would you like to add: ");
             var name = Console.ReadLine();
 
-            RecipeModel recipe = new RecipeModel { Name = name };
+            Recipe recipe = new Recipe { Name = name };
 
             bool another = true;
-            List<IngredientModel> ingredients = new List<IngredientModel>();
+            List<Ingredient> ingredients = new List<Ingredient>();
 
             while (another)
             {
@@ -198,7 +198,7 @@ namespace RecipeConsoleUI.Menus
                         return;
                     }
 
-                    ingredients.Add(new IngredientModel { Name = ingredient });
+                    ingredients.Add(new Ingredient { Name = ingredient });
                 }
 
                 ConsoleHelper.ColorWrite("Would you like to add another ingredient? (y/N): ");

@@ -32,14 +32,14 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="recipe">Ingredient to add</param>
         /// <returns></returns>
-        Task AddIngredient(IngredientModel ingredient);
+        Task AddIngredient(Ingredient ingredient);
 
         /// <summary>
         /// Delete an ingredient from the database
         /// </summary>
         /// <param name="ingredient">Ingredient to delete</param>
         /// <returns></returns>
-        void DeleteIngredient(IngredientModel ingredient);
+        void DeleteIngredient(Ingredient ingredient);
 
         /// <summary>
         /// Delete an ingredient from the database
@@ -60,14 +60,14 @@ namespace RecipeLibrary.Services
         /// </summary>
         /// <param name="name">Name of the recipe</param>
         /// <returns>The requested ingredeint</returns>
-        Task<IngredientModel> GetIngredientByName(string name);
+        Task<Ingredient> GetIngredientByName(string name);
 
         /// <summary>
         /// Get all ingredients from the DB
         /// </summary>
         /// <param name="name">Name of the Ingredient</param>
         /// <returns>All ingredients</returns>
-        Task<List<IngredientModel>> GetAllIngredients();
+        Task<List<Ingredient>> GetAllIngredients();
 
         /// <summary>
         /// Check if a Ingredient already exists

@@ -25,33 +25,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
-    public class IngredientModel
+    public class Recipe
     {
-        public int IngredientModelId { get; set; }
+        /// <summary>
+        /// Database Row Id
+        /// </summary>
+        public int RecipeId { get; set; }
 
         /// <summary>
-        /// Name of the Ingredient
+        /// Name of the Recipe
         /// </summary>
         [Required]
-        [Column(TypeName = "nvarchar(75)")]
-        public string Name {get; set;}
+        [Column(TypeName = "nvarchar(100)")]
+        public string Name { get; set; }
 
         /// <summary>
-        /// Quntity needed
+        /// Ingredients in the Recipe
         /// </summary>
-        int Quantity { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
 
-        /// <summary>
-        /// The type of measurement for the Quantity
-        /// </summary>
-        [Column(TypeName = "nvarchar(50)")]
-        string Measurement { get; set; }
-
-        /// <summary>
-        /// The reciple to make the ingredeint
-        /// </summary>
-        RecipeModel Recipe { get; set; }
-
-        public ICollection<RecipeModel> recipes { get; set; }
+        public string Directions { get; set; }
     }
 }

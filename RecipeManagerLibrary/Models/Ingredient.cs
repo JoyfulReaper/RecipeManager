@@ -25,23 +25,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
-    public class RecipeModel
+    public class Ingredient
     {
-        /// <summary>
-        /// Database Row Id
-        /// </summary>
-        public int RecipeModelId { get; set; }
+        public int IngredientId { get; set; }
 
         /// <summary>
-        /// Name of the Recipe
+        /// Name of the Ingredient
         /// </summary>
         [Required]
-        [Column(TypeName = "nvarchar(100)")]
-        public string Name { get; set; }
+        [Column(TypeName = "nvarchar(75)")]
+        public string Name {get; set;}
 
         /// <summary>
-        /// Ingredients in the Recipe
+        /// The reciple to make the ingredeint
         /// </summary>
-        public ICollection<IngredientModel> Ingredients { get; set; }
+        Recipe Recipe { get; set; }
+
+        public ICollection<Recipe> recipes { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace RecipeTests.Services
             using (var context = new RecipeManagerContext(ContextOptions))
             {
                 var ingredientService = new IngredientService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<IngredientService>());
-                await ingredientService.AddIngredient(new IngredientModel { Name = "Carrot" });
+                await ingredientService.AddIngredient(new Ingredient { Name = "Carrot" });
 
                 ingredientService.UpdateIngredients();
 
@@ -131,9 +131,9 @@ namespace RecipeTests.Services
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                var apple = new IngredientModel { Name = "Apple" };
-                var orange = new IngredientModel { Name = "Orange" };
-                var peach = new IngredientModel { Name = "Peach" };
+                var apple = new Ingredient { Name = "Apple" };
+                var orange = new Ingredient { Name = "Orange" };
+                var peach = new Ingredient { Name = "Peach" };
 
                 context.AddRange(apple, orange, peach);
                 context.SaveChanges();

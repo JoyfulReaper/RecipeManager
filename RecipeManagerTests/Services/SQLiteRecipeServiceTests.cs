@@ -54,11 +54,11 @@ namespace RecipeTests.Services
             {
                 var recipeService = new RecipeService(new UnitOfWork(context, new NullLogger<UnitOfWork>()), new NullLogger<RecipeService>());
 
-                RecipeModel recipe = new RecipeModel
+                Recipe recipe = new Recipe
                 {
                     Name = "Chips",
-                    Ingredients = new List<IngredientModel> { new IngredientModel { Name = "Potato" },
-                        new IngredientModel { Name = "Oil" }
+                    Ingredients = new List<Ingredient> { new Ingredient { Name = "Potato" },
+                        new Ingredient { Name = "Oil" }
                     }
                 };
 
@@ -193,21 +193,21 @@ namespace RecipeTests.Services
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                List<IngredientModel> fruitSaladIngredients = new List<IngredientModel>() {
-                    new IngredientModel { Name = "Pineapple" },
-                    new IngredientModel { Name = "Orange" },
-                    new IngredientModel { Name = "Peach" },
+                List<Ingredient> fruitSaladIngredients = new List<Ingredient>() {
+                    new Ingredient { Name = "Pineapple" },
+                    new Ingredient { Name = "Orange" },
+                    new Ingredient { Name = "Peach" },
                 };
 
-                var fruitSalad = new RecipeModel { Name = "Fruit Salad", Ingredients = fruitSaladIngredients };
+                var fruitSalad = new Recipe { Name = "Fruit Salad", Ingredients = fruitSaladIngredients };
 
-                List<IngredientModel> applePieIngredients = new List<IngredientModel>() {
-                    new IngredientModel { Name = "Apple" },
-                    new IngredientModel { Name = "Crust" },
-                    new IngredientModel { Name = "Sugar" },
+                List<Ingredient> applePieIngredients = new List<Ingredient>() {
+                    new Ingredient { Name = "Apple" },
+                    new Ingredient { Name = "Crust" },
+                    new Ingredient { Name = "Sugar" },
                 };
 
-                var applePie = new RecipeModel { Name = "Apple Pie", Ingredients = applePieIngredients };
+                var applePie = new Recipe { Name = "Apple Pie", Ingredients = applePieIngredients };
 
                 context.AddRange(fruitSalad, applePie);
                 context.SaveChanges();

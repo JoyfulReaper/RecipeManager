@@ -48,14 +48,14 @@ namespace RecipeLibrary.Data
 
             _logger.LogInformation("DataSeed: Seed() - Seeding Database.");
 
-            _recipeService.AddRecipe(new RecipeModel
+            _recipeService.AddRecipe(new Recipe
             {
                 Name = "Cake",
-                Ingredients = new List<IngredientModel>()
+                Ingredients = new List<Ingredient>()
                 {
-                    new IngredientModel() {Name = "Flour"},
-                    new IngredientModel() {Name = "Water"},
-                    new IngredientModel() {Name = "Icing"},
+                    new Ingredient() {Name = "Flour"},
+                    new Ingredient() {Name = "Water"},
+                    new Ingredient() {Name = "Icing"},
                 }
             });
 

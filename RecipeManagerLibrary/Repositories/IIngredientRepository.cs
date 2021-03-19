@@ -23,7 +23,7 @@ using RecipeLibrary.Models;
 
 namespace RecipeLibrary.Repositories
 {
-    public interface IIngredientRepository : IRepository<IngredientModel>
+    public interface IIngredientRepository : IRepository<Ingredient>
     {
         public void DeleteIngredientByName(string name);
     }

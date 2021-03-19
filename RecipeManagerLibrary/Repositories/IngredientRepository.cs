@@ -27,7 +27,7 @@ using System.Linq;
 
 namespace RecipeLibrary.Repositories
 {
-    public class IngredientRepository : Repository<IngredientModel>, IIngredientRepository
+    public class IngredientRepository : Repository<Ingredient>, IIngredientRepository
     {
         public IngredientRepository(RecipeManagerContext context) : base(context)
         { }
@@ -39,7 +39,7 @@ namespace RecipeLibrary.Repositories
 
         public void DeleteIngredientByName(string name)
         {
-            var ingredient = Context.Set<IngredientModel>().Where(i => i.Name.ToLower() == name.ToLower()).FirstOrDefault();
+            var ingredient = Context.Set<Ingredient>().Where(i => i.Name.ToLower() == name.ToLower()).SingleOrDefault();
 
             if(ingredient == null)
             {

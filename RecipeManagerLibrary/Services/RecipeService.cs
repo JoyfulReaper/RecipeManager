@@ -21,7 +21,7 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public async Task AddRecipe(RecipeModel recipe)
+        public async Task AddRecipe(Recipe recipe)
         {
             if (!await RecipeExists(recipe.Name))
             {
@@ -35,7 +35,7 @@ namespace RecipeLibrary.Services
             }
         }
 
-        public void DeleteRecipe(RecipeModel recipe)
+        public void DeleteRecipe(Recipe recipe)
         {
             _unitOfWork.Recipes.Remove(recipe);
             _logger.LogDebug("RecipeService: DeleteRecipe() - Recipe {recipe} deleted.", recipe.Name);
@@ -47,24 +47,24 @@ namespace RecipeLibrary.Services
             _logger.LogDebug("RecipeService: DeleteRecipeByName() - Deleted recipe {recipe} by name.", name);
         }
 
-        public async Task<List<RecipeModel>> GetAllRecipes()
+        public async Task<List<Recipe>> GetAllRecipes()
         {
             var res = await _unitOfWork.Recipes.GetAllRecipesWithIngredients();
             _logger.LogDebug("RecipeService: GetAllRecipes() - All recipes were requested.");
             return res.ToList();
         }
 
-        public async Task<RecipeModel> GetRecipeByName(string name)
+        public async Task<Recipe> GetRecipeByName(string name)
         {
             var res =  await _unitOfWork.Recipes.Find(r => r.Name.ToLower() == name.ToLower(), "Ingredients");
             _logger.LogDebug("RecipeService: GetRecipeByName() - Retreived recipe {recipe} by name.", name);
-            return res.FirstOrDefault();
+            return res.SingleOrDefault();
         }
 
         public async Task<bool> RecipeExists(string name)
         {
             var res = await _unitOfWork.Recipes.Find(i => i.Name.ToLower() == name.ToLower());
-            var exists = res.FirstOrDefault() != null;
+            var exists = res.SingleOrDefault() != null;
 
             _logger.LogDebug("RecipeService: RecipeExists() - Checked if recipe {recipe} exists: {exists} ", name, exists);
             return exists;

@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace RecipeLibrary.Repositories
 {
-    public class RecipeRepository : Repository<RecipeModel>, IIRecipeRepository
+    public class RecipeRepository : Repository<Recipe>, IIRecipeRepository
     {
         public RecipeManagerContext RecipeManagerContext
         {
@@ -38,7 +38,7 @@ namespace RecipeLibrary.Repositories
 
         public RecipeRepository(RecipeManagerContext context) : base(context) { }
 
-        public async Task<IEnumerable<RecipeModel>> GetAllRecipesWithIngredients()
+        public async Task<IEnumerable<Recipe>> GetAllRecipesWithIngredients()
         {
             return await RecipeManagerContext
                 .Recipes
@@ -48,7 +48,7 @@ namespace RecipeLibrary.Repositories
 
         public void DeleteRecipeByName(string name)
         {
-            var recipe = Context.Set<RecipeModel>().Where(i => i.Name.ToLower() == name.ToLower()).FirstOrDefault();
+            var recipe = Context.Set<Recipe>().Where(i => i.Name.ToLower() == name.ToLower()).SingleOrDefault();
 
             if (recipe == null)
             {

@@ -25,9 +25,9 @@ using System.Threading.Tasks;
 
 namespace RecipeLibrary.Repositories
 {
-    public interface IIRecipeRepository : IRepository<RecipeModel>
+    public interface IIRecipeRepository : IRepository<Recipe>
     {
-        Task<IEnumerable<RecipeModel>> GetAllRecipesWithIngredients();
+        Task<IEnumerable<Recipe>> GetAllRecipesWithIngredients();
 
         void DeleteRecipeByName(string name);
     }

@@ -20,7 +20,7 @@ namespace RecipeLibrary.Services
             _logger = logger;
         }
 
-        public async Task AddIngredient(IngredientModel ingredient)
+        public async Task AddIngredient(Ingredient ingredient)
         {
             if (!await IngredientExists(ingredient.Name))
             {
@@ -34,7 +34,7 @@ namespace RecipeLibrary.Services
             }
         }
 
-        public void DeleteIngredient(IngredientModel ingredient)
+        public void DeleteIngredient(Ingredient ingredient)
         {
             _unitOfWork.Ingredients.Remove(ingredient);
             _logger.LogDebug("IngredientService: DeleteIngredient() - Deleted ingredient {ingredient}", ingredient.Name);
@@ -46,24 +46,24 @@ namespace RecipeLibrary.Services
             _logger.LogDebug("IngredientService: DeleteIngredientByName() - Deleted ingredient {ingredient} by name.", name);
         }
 
-        public async Task<List<IngredientModel>> GetAllIngredients()
+        public async Task<List<Ingredient>> GetAllIngredients()
         {
             var res = await _unitOfWork.Ingredients.GetAll();
             _logger.LogDebug("IngredientService: GetAllIngredient() - All ingredients were requested.");
             return res.ToList();
         }
 
-        public async Task<IngredientModel> GetIngredientByName(string name)
+        public async Task<Ingredient> GetIngredientByName(string name)
         {
             var res = await _unitOfWork.Ingredients.Find(i => i.Name.ToLower() == name.ToLower());
             _logger.LogDebug("IngredientService: GetIngredientByName() - Retreived ingredient {ingredient} by name.", name);
-            return res.FirstOrDefault();
+            return res.SingleOrDefault();
         }
 
         public async Task<bool> IngredientExists(string name)
         {
             var res = await _unitOfWork.Ingredients.Find(i => i.Name.ToLower() == name.ToLower());
-            var exists = res.FirstOrDefault() != null;
+            var exists = res.SingleOrDefault() != null;
 
             _logger.LogDebug("IngredientService: IngredientExists() - Checked if ingredient {ingredient} exists: {exists} ", name, exists);
             return exists;
