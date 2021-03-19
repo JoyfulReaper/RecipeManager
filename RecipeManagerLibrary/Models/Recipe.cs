@@ -49,7 +49,5 @@ namespace RecipeLibrary.Models
         /// Many-to-Many releationship
         /// </summary>
         public ICollection<Ingredient> Ingredients { get; set; }
-
-        public ICollection<IngredientRelationship> IngredientRelationships { get; set; }
     }
 }

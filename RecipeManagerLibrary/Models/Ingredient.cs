@@ -39,13 +39,21 @@ namespace RecipeLibrary.Models
         /// <summary>
         /// The reciple to make the ingredeint
         /// </summary>
-        Recipe Recipe { get; set; }
+        //public Recipe Recipe { get; set; }
+
+        /// <summary>
+        /// Quanity of the ingredient
+        /// </summary>
+        public double Quantity { get; set; }
+
+        /// <summary>
+        /// Measurement of the ingredient
+        /// </summary>
+        public Measurement Measurement { get; set; }
 
         /// <summary>
         /// Many-to-Many releationship
         /// </summary>
         public ICollection<Recipe> Recipes { get; set; }
-
-        public ICollection<IngredientRelationship> IngredientRelationships { get; set; }
     }
 }

@@ -38,7 +38,5 @@ namespace RecipeLibrary.Models
         [Required]
         [Column(TypeName = "nvarchar(50)")]
         public string MeasurementName { get; set; }
-
-        public ICollection<IngredientRelationship> IngredientRelationships { get; set; }
     }
 }
