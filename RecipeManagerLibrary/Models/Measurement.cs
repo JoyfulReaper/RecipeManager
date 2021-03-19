@@ -25,7 +25,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
-    public class Recipe
+    public class Measurement
     {
         /// <summary>
         /// Database Row Id
@@ -33,22 +33,11 @@ namespace RecipeLibrary.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Name of the Recipe
+        /// The name of the measurement
         /// </summary>
         [Required]
-        [Column(TypeName = "nvarchar(100)")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Directions for making the recipe
-        /// </summary>
-        [Column(TypeName = "nvarchar(3500)")]
-        public string Directions { get; set; }
-
-        /// <summary>
-        /// Many-to-Many releationship
-        /// </summary>
-        public ICollection<Ingredient> Ingredients { get; set; }
+        [Column(TypeName = "nvarchar(50)")]
+        public string MeasurementName { get; set; }
 
         public ICollection<IngredientRelationship> IngredientRelationships { get; set; }
     }

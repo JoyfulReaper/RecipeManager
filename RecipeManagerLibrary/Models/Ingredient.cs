@@ -27,7 +27,7 @@ namespace RecipeLibrary.Models
 {
     public class Ingredient
     {
-        public int IngredientId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Name of the Ingredient
@@ -41,6 +41,11 @@ namespace RecipeLibrary.Models
         /// </summary>
         Recipe Recipe { get; set; }
 
-        public ICollection<Recipe> recipes { get; set; }
+        /// <summary>
+        /// Many-to-Many releationship
+        /// </summary>
+        public ICollection<Recipe> Recipes { get; set; }
+
+        public ICollection<IngredientRelationship> IngredientRelationships { get; set; }
     }
 }

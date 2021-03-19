@@ -19,37 +19,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace RecipeLibrary.Models
 {
-    public class Recipe
+    public class IngredientRelationship
     {
-        /// <summary>
-        /// Database Row Id
-        /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Name of the Recipe
-        /// </summary>
-        [Required]
-        [Column(TypeName = "nvarchar(100)")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Directions for making the recipe
-        /// </summary>
-        [Column(TypeName = "nvarchar(3500)")]
-        public string Directions { get; set; }
-
-        /// <summary>
-        /// Many-to-Many releationship
-        /// </summary>
-        public ICollection<Ingredient> Ingredients { get; set; }
-
-        public ICollection<IngredientRelationship> IngredientRelationships { get; set; }
+        public int IngredientId { get; set; }
+        public Ingredient Ingredient { get; set; }
+        public int RecipeId { get; set; }
+        public Recipe Recipe { get; set; }
+        public int Quantity { get; set; }
     }
 }
