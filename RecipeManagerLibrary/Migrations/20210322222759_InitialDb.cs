@@ -2,7 +2,7 @@
 
 namespace RecipeLibrary.Migrations
 {
-    public partial class IntialDb : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace RecipeLibrary.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    MeasurementName = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    MeasurementName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,8 +25,8 @@ namespace RecipeLibrary.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Directions = table.Column<string>(type: "nvarchar(3500)", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Directions = table.Column<string>(type: "TEXT", maxLength: 3500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,7 +39,7 @@ namespace RecipeLibrary.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "nvarchar(75)", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 75, nullable: false),
                     Quantity = table.Column<double>(type: "REAL", nullable: false),
                     MeasurementId = table.Column<int>(type: "INTEGER", nullable: true)
                 },

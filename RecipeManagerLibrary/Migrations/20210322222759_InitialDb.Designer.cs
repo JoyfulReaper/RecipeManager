@@ -9,14 +9,14 @@ using RecipeLibrary.Data;
 namespace RecipeLibrary.Migrations
 {
     [DbContext(typeof(RecipeManagerContext))]
-    [Migration("20210319225601_IntialDb")]
-    partial class IntialDb
+    [Migration("20210322222759_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.3");
+                .HasAnnotation("ProductVersion", "5.0.4");
 
             modelBuilder.Entity("IngredientRecipe", b =>
                 {
@@ -44,7 +44,8 @@ namespace RecipeLibrary.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(75)");
+                        .HasMaxLength(75)
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("REAL");
@@ -64,7 +65,8 @@ namespace RecipeLibrary.Migrations
 
                     b.Property<string>("MeasurementName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -78,11 +80,13 @@ namespace RecipeLibrary.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Directions")
-                        .HasColumnType("nvarchar(3500)");
+                        .HasMaxLength(3500)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -107,10 +111,15 @@ namespace RecipeLibrary.Migrations
             modelBuilder.Entity("RecipeLibrary.Models.Ingredient", b =>
                 {
                     b.HasOne("RecipeLibrary.Models.Measurement", "Measurement")
-                        .WithMany()
+                        .WithMany("Ingredients")
                         .HasForeignKey("MeasurementId");
 
                     b.Navigation("Measurement");
+                });
+
+            modelBuilder.Entity("RecipeLibrary.Models.Measurement", b =>
+                {
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

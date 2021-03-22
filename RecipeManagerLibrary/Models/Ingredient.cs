@@ -21,19 +21,19 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
     public class Ingredient
     {
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// Name of the Ingredient
         /// </summary>
         [Required]
-        [Column(TypeName = "nvarchar(75)")]
+        [StringLength(75)]
         public string Name {get; set;}
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace RecipeLibrary.Models
         /// <summary>
         /// Measurement of the ingredient
         /// </summary>
-        public Measurement Measurement { get; set; }
+        public Measurement Measurement{ get; set; }
 
         /// <summary>
         /// Many-to-Many releationship
         /// </summary>
-        public ICollection<Recipe> Recipes { get; set; }
+        public virtual ICollection<Recipe> Recipes { get; set; }
     }
 }

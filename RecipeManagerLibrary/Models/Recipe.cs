@@ -21,7 +21,6 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
@@ -30,24 +29,25 @@ namespace RecipeLibrary.Models
         /// <summary>
         /// Database Row Id
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// Name of the Recipe
         /// </summary>
         [Required]
-        [Column(TypeName = "nvarchar(100)")]
+        [StringLength(50)]
         public string Name { get; set; }
 
         /// <summary>
         /// Directions for making the recipe
         /// </summary>
-        [Column(TypeName = "nvarchar(3500)")]
+        [StringLength(3500)]
         public string Directions { get; set; }
 
         /// <summary>
         /// Many-to-Many releationship
         /// </summary>
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
     }
 }

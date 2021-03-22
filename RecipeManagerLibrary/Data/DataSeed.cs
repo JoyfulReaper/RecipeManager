@@ -48,14 +48,16 @@ namespace RecipeLibrary.Data
 
             _logger.LogInformation("DataSeed: Seed() - Seeding Database.");
 
+            Measurement cup = new Measurement() { MeasurementName = "Cup " };
+
             _recipeService.AddRecipe(new Recipe
             {
                 Name = "Cake",
                 Ingredients = new List<Ingredient>()
                 {
-                    new Ingredient() {Name = "Flour"},
-                    new Ingredient() {Name = "Water"},
-                    new Ingredient() {Name = "Icing"},
+                    new Ingredient() {Name = "Flour", Quantity = 4, Measurement = cup },
+                    new Ingredient() {Name = "Water", Quantity = 2, Measurement = cup },
+                    new Ingredient() {Name = "Icing", Quantity = 1, Measurement = cup },
                 }
             });
 

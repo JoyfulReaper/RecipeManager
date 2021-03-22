@@ -21,7 +21,6 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeLibrary.Models
 {
@@ -30,13 +29,16 @@ namespace RecipeLibrary.Models
         /// <summary>
         /// Database Row Id
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// The name of the measurement
         /// </summary>
         [Required]
-        [Column(TypeName = "nvarchar(50)")]
+        [StringLength(50)]
         public string MeasurementName { get; set; }
+
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
     }
 }
